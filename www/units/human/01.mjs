@@ -1,7 +1,7 @@
 export default
 {
   "description": {
-    "name": "民兵",
+    "name": "01",
     "intro": "最基础的单位",
     "parent": "human",
     "icon": "units/human/a01.png",

@@ -1,38 +1,65 @@
 import HealthPowerBar
     from "../tools/HealthPowerBar.mjs";
 
-import Militia
-    from "../assets/units/json/human/militia.mjs"
+import human01
+    from "../units/human/01.mjs"
+import Loader
+    from "../units/Loader.mjs";
 
-export default class units extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, name, direction) {
-        super(scene, x, x, name);
+export default class units extends Phaser.Physics.Arcade.Sprite {
+    constructor(scene, x, y, key, direction) {
+        super(scene, x, x, key);
+        scene.add.existing(this);
+        scene.physics.add.existing(this);
         //设置单位的位置
         this.setPosition(x, y);
-        //通过name得到此单位的默认数据
-        this.default = getData(name);
+        //通过key得到此单位的默认数据
+        this.default = Loader.getDefault(key);
+        if (this.default === undefined) {
+            throw '找不到此单词的数据'
+        }
         //复制一遍数据当作实例的当前值
         this.current = JSON.parse(JSON.stringify(this.default));
-        //面朝的方向 left right
-        this.direction = direction;
+        //方向
+        this.direction = direction
         //生命条 能量条
-        this.bar = new HealthPowerBar(scene, x - 100, y - 1000, 80, this.default.battle.health, this.default.battle.power);
+        this.bar = new HealthPowerBar(scene, x, y, 64, this.default.battle.health, this.default.battle.power);
         //负值表示翻转, 小数表示缩小
-        this.setScale(this.direction === 'left' ? 1 : -1 * 0.4);
+        let scale = 0.5;
+        if (this.direction === 'left') {
+            this.setScale(scale, scale);
+        } else {
+            this.setScale(-1 * scale, scale);
+            this.setOffset(128 * scale * 2, 0)
+        }
         //落地弹跳值
         this.setBounce(0.2);
         //不会掉出地图
         this.setCollideWorldBounds(true);
         //刷新
         this.refreshBody();
-        //显示
-        scene.add.existing(this);
-    }
-}
+        //与地面的碰撞
+        scene.physics.add.collider(this, scene.ground);
 
-function getData(name) {
-    switch (name) {
-        case 'militia':
-            return Militia;
+
+    }
+
+    battle(unit) {
+        let damage;
+        if (this.current.battle.armor.shield > 0) {
+            damage = 1;
+        } else {
+            damage = unit.current.battle.attack.atk - this.current.battle.armor.shield;
+            if (damage < 0) damage = 1;
+        }
+        this.current.battle.health -= damage;
+        this.bar.setHealth(this.current.battle.health);
+        unit.current.battle.power += damage;
+        unit.bar.setPower(unit.current.battle.power);
+    }
+
+    move() {
+        this.setVelocityX((this.direction === 'left' ? 1 : -1) * this.current.move.speed);
+        this.bar.draw(this.x, this.y);
     }
 }

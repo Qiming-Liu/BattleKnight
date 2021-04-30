@@ -1,9 +1,14 @@
 import BaseScene from "./BaseScene.mjs";
+import UnitsFactory
+    from "../tools/UnitsFactory.mjs";
+import Loader
+    from "../units/Loader.mjs";
 
 export default class BattleScene extends BaseScene{
     constructor() {
         super('BattleScene');
         this.ground = null;
+        this.left = null;
     }
 
     preload() {
@@ -11,11 +16,7 @@ export default class BattleScene extends BaseScene{
         this.load.setBaseURL('./assets/');
         this.load.image('background', 'scenes/battle/background.png');
         this.load.image('ground', 'scenes/battle/ground.png');
-        this.load.spritesheet('a01', 'units/human/a01.png', {
-            frameWidth: 128,
-            frameHeight: 128
-        });
-
+        Loader.LoadHuman(this);
     }
 
     create() {
@@ -23,11 +24,20 @@ export default class BattleScene extends BaseScene{
         this.add.image(this.game.config.width * 0.5, this.game.config.height * 0.5 * 0.75, 'background');
         this.ground = this.physics.add.staticGroup();
         this.ground.create(this.game.config.width * 0.5, this.game.config.height * 0.7, 'ground', null, false, true);
-        let player = this.physics.add.sprite(100, 100, 'a01');
 
-        this.physics.add.collider(player, ground);
+        //刷兵
+        this.left = new UnitsFactory(this, 1000, 'left');
+        this.right = new UnitsFactory(this, 1000, 'right');
+        this.physics.add.overlap(this.left.unitsList, this.right.unitsList, this.battle, null, this)
     }
 
-    update() {
+    update(time, delta) {
+        this.left.update();
+        this.right.update();
+    }
+
+    battle(left, right){
+        left.battle(right);
+        right.battle(left);
     }
 }
