@@ -24,3 +24,21 @@ function onDeviceReady() {
 
     new Phaser.Game(config);
 }
+let config = {
+    type: Phaser.AUTO,
+    parent: 'phaser-game',
+    width: 1280,
+    height: 720,
+    scene: [StartScene, BattleScene],
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: {
+                y: 300
+            },
+            debug: true
+        }
+    }
+};
+
+new Phaser.Game(config);

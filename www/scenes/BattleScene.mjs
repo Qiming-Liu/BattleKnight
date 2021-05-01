@@ -1,14 +1,17 @@
-import BaseScene from "./BaseScene.mjs";
+import BaseScene
+    from "./BaseScene.mjs";
 import UnitsFactory
     from "../tools/UnitsFactory.mjs";
 import Loader
     from "../units/Loader.mjs";
+import units
+    from "../model/units.mjs";
+import building
+    from "../model/building.mjs";
 
-export default class BattleScene extends BaseScene{
+export default class BattleScene extends BaseScene {
     constructor() {
         super('BattleScene');
-        this.ground = null;
-        this.left = null;
     }
 
     preload() {
@@ -25,19 +28,26 @@ export default class BattleScene extends BaseScene{
         this.ground = this.physics.add.staticGroup();
         this.ground.create(this.game.config.width * 0.5, this.game.config.height * 0.7, 'ground', null, false, true);
 
+        //基地
+        this.leftBase = new building(this, 0, 0, 'humanbase', 'left');
+        this.leftBase.setDisplaySize(this.game.config.width * 0.17, this.game.config.height * 0.5);
+        this.leftBase.visible = false;
+        this.rightBase = new building(this, this.game.config.width, 0, 'humanbase', 'right');
+        this.rightBase.setDisplaySize(this.game.config.width * 0.17, this.game.config.height * 0.5);
+        this.rightBase.visible = false;
+
         //刷兵
-        this.left = new UnitsFactory(this, 1000, 'left');
-        this.right = new UnitsFactory(this, 1000, 'right');
-        this.physics.add.overlap(this.left.unitsList, this.right.unitsList, this.battle, null, this)
+        this.left = new UnitsFactory(this, 10000, 'left');
+        this.right = new UnitsFactory(this, 10000, 'right');
     }
 
     update(time, delta) {
-        this.left.update();
-        this.right.update();
-    }
-
-    battle(left, right){
-        left.battle(right);
-        right.battle(left);
+        if (Phaser.Math.Between(0, 1) === 0) {
+            this.left.tick(this.right.unitsList, delta);
+            this.right.tick(this.left.unitsList, delta);
+        } else {
+            this.right.tick(this.left.unitsList, delta);
+            this.left.tick(this.right.unitsList, delta);
+        }
     }
 }

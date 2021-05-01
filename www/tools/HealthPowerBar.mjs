@@ -42,7 +42,7 @@ export default class HealthPowerBar {
         } else {
             this.healthBar.fillStyle(0x00ff00);
         }
-        this.healthBar.fillRect(x + 2, y + 2, this.width - 4 * this.health / this.maxHealth, 10);
+        this.healthBar.fillRect(x + 2, y + 2, (this.width - 4) * this.health / this.maxHealth, 10);
 
         //Power
         if (this.maxPower !== 0) {
@@ -57,5 +57,10 @@ export default class HealthPowerBar {
             }
             this.healthBar.fillRect(x + 2, y + 2, this.width - 4 * this.power / this.maxPower, 10);
         }
+    }
+
+    destroy() {
+        this.healthBar.destroy();
+        this.healthBar.destroy();
     }
 }
