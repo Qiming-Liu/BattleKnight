@@ -25,10 +25,9 @@ export default class HealthPowerBarBuilding {
     draw(x, y) {
         this.healthBar.clear();
         this.powerBar.clear();
-
         //offset
-        x = x - 32;
-        y = y - 64;
+        x = x - 64;
+        y = y + 241;
 
         //Health
         this.healthBar.fillStyle(0x000000);//bg
@@ -45,18 +44,18 @@ export default class HealthPowerBarBuilding {
         this.healthBar.fillRect(x + 2, y + 2, (this.width - 4) * this.health / this.maxHealth, 10);
 
         //Power
-        if (this.maxPower !== 0) {
-            this.powerBar.fillStyle(0x000000);//bg
-            this.healthBar.fillRect(x - 18, y - 18, this.width, 14);
-            this.healthBar.fillStyle(0xffffff);
-            this.healthBar.fillRect(x + 14, y + 14, this.width - 4, 10);
-            if (this.power < this.maxPower) {
-                this.healthBar.fillStyle(0xffd700);
-            } else {
-                this.healthBar.fillStyle(0xff0000);
-            }
-            this.healthBar.fillRect(x + 2, y + 2, this.width - 4 * this.power / this.maxPower, 10);
-        }
+        // if (this.maxPower !== 0) {
+        //     this.powerBar.fillStyle(0x000000);//bg
+        //     this.powerBar.fillRect(x - 18, y - 18, this.width, 14);
+        //     this.powerBar.fillStyle(0xffffff);
+        //     this.powerBar.fillRect(x + 14, y + 14, this.width - 4, 10);
+        //     if (this.power < this.maxPower) {
+        //         this.powerBar.fillStyle(0xffd700);
+        //     } else {
+        //         this.powerBar.fillStyle(0xff0000);
+        //     }
+        //     this.powerBar.fillRect(x + 2, y + 2, this.width - 4 * this.power / this.maxPower, 10);
+        // }
     }
 
     destroy() {

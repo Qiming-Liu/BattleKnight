@@ -1,17 +1,17 @@
 export default {
     "description": {
-        "name": "野人",
-        "intro": "最基础的单位",
+        "name": "基础骑士(等级LV1)",
+        "intro": "带护甲的基础单位, 攻击力较低",
         "parent": "knight",
         "type": "unit",
-        "icon": "objects/knight/Savage.png",
-        "image": "objects/knight/Savage.png"
+        "icon": "objects/knight/KnightLV1.png",
+        "image": "objects/knight/KnightLV1.png"
     },
     "battle": {
         "health": 10,
         "power": 0,
         "attack": {
-            "atk": 3,
+            "atk": 2,
             "interval": 1000,
             "range": 60,
             "splash": 0,
@@ -19,13 +19,13 @@ export default {
             "speed": 0
         },
         "armor": {
-            "reduce": 0,
+            "reduce": 1,
             "shield": 0
         }
     },
     "skills": [],
     "move": {
-        "speed": 60,
+        "speed": 50,
         "height": 0
     },
     "cost": {

@@ -1,5 +1,3 @@
-import HealthPowerBar
-    from "../tools/HealthPowerBar.mjs";
 import Loader
     from "../objects/Loader.mjs";
 import HealthPowerBarBuilding
@@ -25,11 +23,16 @@ export default class Building extends Phaser.Physics.Arcade.Sprite {
         this.current.battle.power = 0;
         //方向
         this.direction = direction
-        //生命条 能量条
-        this.bar = new HealthPowerBarBuilding(scene, x, y, 128, this.default.battle.health, this.default.battle.power);
         //负值表示翻转, 小数表示缩小
-        let scale = 0.7;
-        this.setScale(scale, scale);
+        let scale = 0.6;
+        if (this.direction === 'left') {
+            this.setScale(-1 * scale, scale);
+            this.setOffset(256, 0)
+        } else {
+            this.setScale(scale, scale);
+        }
+        //生命条 能量条
+        this.bar = new HealthPowerBarBuilding(scene, x, y, 128, this.default.battle.health, this.default.battle.power, scale);
         //落地弹跳值
         this.setBounce(0);
         //不会掉出地图
@@ -42,7 +45,7 @@ export default class Building extends Phaser.Physics.Arcade.Sprite {
         this.collider = null;
         //预处理攻击方式
         switch (this.current.battle.attack.projectile) {
-            case "shake":{
+            case "shake": {
                 this.shake = scene.plugins.get('rexshakepositionplugin').add(this);
                 break;
             }
@@ -57,6 +60,7 @@ export default class Building extends Phaser.Physics.Arcade.Sprite {
 
     tick(enemy, delta) {
         this.bar.draw(this.x, this.y);
+        // console.log([this.direction, this.x, this.y]);
 
         this.attackTime += delta;
 
@@ -101,7 +105,7 @@ export default class Building extends Phaser.Physics.Arcade.Sprite {
             }
             //攻击动画
             switch (this.current.battle.attack.projectile) {
-                case "shake":{
+                case "shake": {
                     this.shake.shake(100, 10);
                     break;
                 }

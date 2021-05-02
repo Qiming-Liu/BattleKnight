@@ -1,24 +1,39 @@
 import Unit
     from "../models/Unit.mjs";
+import Loader
+    from "../objects/Loader.mjs";
 
 export default class UnitsFactory {
-    constructor(scene, delay, direction) {
+    constructor(scene, direction) {
         this.UnitsList = [];
-        let t = this;
-        //这会导致窗口失去焦点时仍计算时间
-        setInterval(function () {
-           t.produce(scene, direction);
-        }, delay);
+        this.timer = scene.time.addEvent();
+        if (direction === 'left') {
+            this.change(scene, 'knightSavage', direction);
+        } else {
+            this.change(scene, 'knightKnightLV1', direction);
+        }
     }
 
-    produce(scene, direction) {
+    change(scene, key, direction) {
+        let t = this;
+        this.timer.remove();
+        this.timer = scene.time.addEvent({
+            delay: Loader.getDefault(key).cost.interval,
+            callback: function () {
+                t.produce(scene, key, direction);
+            },
+            loop: true
+        });
+    }
+
+    produce(scene, key, direction) {
         if (direction === 'left') {
-            let unit = new Unit(scene, scene.game.config.width * 0.14, scene.game.config.height * 0.6, 'knightSavage', direction);
+            let unit = new Unit(scene, scene.game.config.width * 0.14, scene.game.config.height * 0.6, key, direction);
             unit.collider = scene.physics.add.collider(unit, this.UnitsList);
             this.UnitsList.push(unit);
 
         } else {
-            let unit = new Unit(scene, scene.game.config.width * 0.86, scene.game.config.height * 0.6, 'knightSavage', direction);
+            let unit = new Unit(scene, scene.game.config.width * 0.86, scene.game.config.height * 0.6, key, direction);
             unit.collider = scene.physics.add.collider(unit, this.UnitsList);
             this.UnitsList.push(unit);
         }

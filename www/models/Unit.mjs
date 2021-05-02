@@ -1,5 +1,5 @@
-import HealthPowerBar
-    from "../tools/HealthPowerBar.mjs";
+import HealthPowerBarUnit
+    from "../tools/HealthPowerBarUnit.mjs";
 import Loader
     from "../objects/Loader.mjs";
 
@@ -23,16 +23,16 @@ export default class Unit extends Phaser.Physics.Arcade.Sprite {
         this.current.battle.power = 0;
         //方向
         this.direction = direction
-        //生命条 能量条
-        this.bar = new HealthPowerBar(scene, x, y, this.displayWidth / 2, this.default.battle.health, this.default.battle.power);
         //负值表示翻转, 小数表示缩小
         let scale = 0.5;
         if (this.direction === 'left') {
             this.setScale(scale, scale);
         } else {
             this.setScale(-1 * scale, scale);
-            this.setOffset(128 * scale * 2, 0)
+            this.setOffset(128, 0)
         }
+        //生命条 能量条
+        this.bar = new HealthPowerBarUnit(scene, x, y, this.displayWidth, this.default.battle.health, this.default.battle.power, scale);
         //落地弹跳值
         this.setBounce(0.4);
         //不会掉出地图
@@ -45,7 +45,7 @@ export default class Unit extends Phaser.Physics.Arcade.Sprite {
         this.collider = null;
         //预处理攻击方式
         switch (this.current.battle.attack.projectile) {
-            case "shake":{
+            case "shake": {
                 this.shake = scene.plugins.get('rexshakepositionplugin').add(this);
                 break;
             }
@@ -104,7 +104,7 @@ export default class Unit extends Phaser.Physics.Arcade.Sprite {
             }
             //攻击动画
             switch (this.current.battle.attack.projectile) {
-                case "shake":{
+                case "shake": {
                     this.shake.shake(100, 10);
                     break;
                 }
@@ -113,7 +113,8 @@ export default class Unit extends Phaser.Physics.Arcade.Sprite {
                 }
             }
             //扣血
-            if (damage > this.attackTarget.current.battle.health) {//这一下会把目标打死
+            this.attackTarget.current.battle.health -= damage;
+            if (this.attackTarget.current.battle.health <= 0) {//目标死亡
                 this.attackTarget.current.battle.health = 0;
                 //取消死亡单位碰撞
                 this.attackTarget.collider.destroy();
@@ -123,9 +124,8 @@ export default class Unit extends Phaser.Physics.Arcade.Sprite {
                 setTimeout(function () {
                     t.destroy();
                 }, 1500);
-            } else {
-                this.attackTarget.current.battle.health -= damage;
             }
+
             this.attackTarget.bar.setHealth(this.attackTarget.current.battle.health);
 
             //加能量

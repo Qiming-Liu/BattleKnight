@@ -26,18 +26,15 @@ export default class BattleScene extends BaseScene {
         //background
         this.add.image(this.game.config.width * 0.5, this.game.config.height * 0.5 * 0.75, 'background');
         this.ground = this.physics.add.staticGroup();
-        this.ground.create(this.game.config.width * 0.5, this.game.config.height * 0.71, 'ground', null, false, true);
+        this.ground.create(this.game.config.width * 0.5, this.game.config.height * 0.69, 'ground', null, false, true);
 
         //基地
-        this.left.Base = new Building(this, 0, 0, 'knightBase01', 'left');
-        // this.left.Base.setDisplaySize(this.game.config.width * 0.17, this.game.config.height * 0.5);
-
-        this.right.Base = new Building(this, this.game.config.width, 0, 'knightBase01', 'right');
-        // this.right.Base.setDisplaySize(this.game.config.width * 0.17, this.game.config.height * 0.5);
+        this.left.Base = new Building(this, this.game.config.width * 0.08, 0, 'knightBase01', 'left');
+        this.right.Base = new Building(this, this.game.config.width * 0.92, 0, 'knightBase01', 'right');
 
         //刷兵
-        this.left.UnitsFactory = new UnitsFactory(this, 10000, 'left');
-        this.right.UnitsFactory = new UnitsFactory(this, 10000, 'right');
+        this.left.UnitsFactory = new UnitsFactory(this, 'left');
+        this.right.UnitsFactory = new UnitsFactory(this, 'right');
     }
 
     update(time, delta) {
@@ -56,5 +53,7 @@ export default class BattleScene extends BaseScene {
                 this.left.UnitsFactory.tick(this.right.UnitsFactory.UnitsList, delta);
             }
         }
+        this.left.Base.tick(this.right.UnitsFactory.UnitsList, delta);
+        this.right.Base.tick(this.right.UnitsFactory.UnitsList, delta);
     }
 }
