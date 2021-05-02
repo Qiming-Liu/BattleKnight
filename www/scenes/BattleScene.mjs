@@ -39,21 +39,21 @@ export default class BattleScene extends BaseScene {
 
     update(time, delta) {
         if (this.right.UnitsFactory.UnitsList.length > this.left.UnitsFactory.UnitsList.length) {
-            this.left.UnitsFactory.tick(this.right.UnitsFactory.UnitsList, delta);
-            this.right.UnitsFactory.tick(this.left.UnitsFactory.UnitsList, delta);
+            this.left.UnitsFactory.tick(this.right, delta);
+            this.right.UnitsFactory.tick(this.left, delta);
         } else if (this.right.UnitsFactory.UnitsList.length < this.left.UnitsFactory.UnitsList.length) {
-            this.right.UnitsFactory.tick(this.left.UnitsFactory.UnitsList, delta);
-            this.left.UnitsFactory.tick(this.right.UnitsFactory.UnitsList, delta);
+            this.right.UnitsFactory.tick(this.left, delta);
+            this.left.UnitsFactory.tick(this.right, delta);
         } else {
             if (Phaser.Math.Between(0, 1) === 0) {
-                this.left.UnitsFactory.tick(this.right.UnitsFactory.UnitsList, delta);
-                this.right.UnitsFactory.tick(this.left.UnitsFactory.UnitsList, delta);
+                this.left.UnitsFactory.tick(this.right, delta);
+                this.right.UnitsFactory.tick(this.left, delta);
             } else {
-                this.right.UnitsFactory.tick(this.left.UnitsFactory.UnitsList, delta);
-                this.left.UnitsFactory.tick(this.right.UnitsFactory.UnitsList, delta);
+                this.right.UnitsFactory.tick(this.left, delta);
+                this.left.UnitsFactory.tick(this.right, delta);
             }
         }
         this.left.Base.tick(this.right.UnitsFactory.UnitsList, delta);
-        this.right.Base.tick(this.right.UnitsFactory.UnitsList, delta);
+        this.right.Base.tick(this.left.UnitsFactory.UnitsList, delta);
     }
 }

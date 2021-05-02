@@ -11,7 +11,7 @@ export default {
         "health": 10,
         "power": 0,
         "attack": {
-            "atk": 2,
+            "atk": 100,
             "interval": 1000,
             "range": 60,
             "splash": 0,

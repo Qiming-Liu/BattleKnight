@@ -66,7 +66,12 @@ export default class Unit extends Phaser.Physics.Arcade.Sprite {
         if (this.current.battle.health > 0) {//自己没死
             if (this.attackTarget !== null) {//有攻击目标
                 if (this.attackTarget.current.battle.health > 0) {//目标活着
-                    let distance = Phaser.Math.Distance.Between(this.body.x, this.body.y, this.attackTarget.body.x, this.attackTarget.body.y);
+                    let distance;
+                    if (this.attackTarget.current.description.type === 'building') {//如果目标是建筑, 不计算高度
+                        distance = Phaser.Math.Distance.Between(this.body.x, 0, this.attackTarget.body.x, 0);
+                    } else {
+                        distance = Phaser.Math.Distance.Between(this.body.x, this.body.y, this.attackTarget.x, this.attackTarget.y);
+                    }
                     if (distance <= this.current.battle.attack.range) {//在攻击范围内
                         //停止移动
                         this.setVelocityX(0);
@@ -145,7 +150,13 @@ export default class Unit extends Phaser.Physics.Arcade.Sprite {
         let attackAbleList = [];
         for (let i = 0; i < enemy.length; i++) {
             if (enemy[i].current.battle.health > 0) {//目标活着
-                if (this.current.battle.attack.range > Phaser.Math.Distance.Between(this.body.x, this.body.y, enemy[i].body.x, enemy[i].body.y)) {//可以攻击到
+                let distance;
+                if (enemy[i].current.description.type === 'building') {//如果目标是建筑, 不计算高度
+                    distance = Phaser.Math.Distance.Between(this.body.x, 0, enemy[i].body.x, 0);
+                } else {
+                    distance = Phaser.Math.Distance.Between(this.body.x, this.body.y, enemy[i].x, enemy[i].y);
+                }
+                if (distance <= this.current.battle.attack.range) {//在攻击范围内
                     //加入可攻击列表
                     attackAbleList.push(enemy[i]);
                 }
@@ -158,7 +169,7 @@ export default class Unit extends Phaser.Physics.Arcade.Sprite {
         } else {
             let t = this;
             attackAbleList.sort(function (a, b) {
-                return Phaser.Math.Distance.Between(t.body.x, t.body.y, a.body.x, a.body.y) - Phaser.Math.Distance.Between(t.body.x, t.body.y, b.body.x, b.body.y)
+                return Phaser.Math.Distance.Between(t.body.x, t.body.y, a.body.x, a.body.y) - Phaser.Math.Distance.Between(t.body.x, t.body.y, b.body.x, b.body.y);
             });
             return attackAbleList[0];
         }

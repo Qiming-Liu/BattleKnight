@@ -9,7 +9,7 @@ export default {
     },
     "battle": {
         "health": 1000,
-        "power": 100,
+        "power": 0,
         "attack": {
             "atk": 1,
             "interval": 1,

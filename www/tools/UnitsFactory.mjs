@@ -10,7 +10,7 @@ export default class UnitsFactory {
         if (direction === 'left') {
             this.change(scene, 'knightSavage', direction);
         } else {
-            this.change(scene, 'knightKnightLV1', direction);
+            // this.change(scene, 'knightKnightLV1', direction);
         }
     }
 
@@ -40,8 +40,9 @@ export default class UnitsFactory {
     }
 
     tick(enemy, delta) {
+        let enemyList = enemy.UnitsFactory.UnitsList.concat(enemy.Base);
         for (let i = 0; i < this.UnitsList.length; i++) {
-            this.UnitsList[i].tick(enemy, delta);
+            this.UnitsList[i].tick(enemyList, delta);
         }
     }
 }

@@ -25,7 +25,7 @@ export default {
     },
     "skills": [],
     "move": {
-        "speed": 60,
+        "speed": 160,
         "height": 0
     },
     "cost": {
