@@ -24,6 +24,7 @@ function onDeviceReady() {
 
     new Phaser.Game(config);
 }
+//用于js调试
 let config = {
     type: Phaser.AUTO,
     parent: 'phaser-game',
@@ -41,4 +42,4 @@ let config = {
     }
 };
 
-new Phaser.Game(config);
+window.game = new Phaser.Game(config);

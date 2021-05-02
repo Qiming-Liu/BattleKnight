@@ -1,10 +1,11 @@
 export default {
     "description": {
-        "name": "01",
+        "name": "野人",
         "intro": "最基础的单位",
-        "parent": "human",
-        "icon": "units/human/a01.png",
-        "image": "units/human/a01.png"
+        "parent": "knight",
+        "type": "unit",
+        "icon": "objects/knight/Savage.png",
+        "image": "objects/knight/Savage.png"
     },
     "battle": {
         "health": 10,
@@ -14,7 +15,7 @@ export default {
             "interval": 1000,
             "range": 64,
             "splash": 0,
-            "throw": null,
+            "projectile": "shake",
             "speed": 0
         },
         "armor": {

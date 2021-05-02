@@ -6,11 +6,13 @@ export default {
         //介绍文字
         "intro": "最基础的单位",
         //种族
-        "parent": "human",
+        "parent": "knight",
+        //类型 unit=刷兵单位 hero=特种单位 building=建筑
+        "type": "unit",
         //头像
-        "icon": "units/human/a01.png",
+        "icon": "objects/knight/Savage.png",
         //图像
-        "image": "units/human/a01.png"
+        "image": "objects/knight/Savage.png"
     },
     //战斗
     "battle": {
@@ -28,8 +30,8 @@ export default {
             "range": 100,
             //溅射范围
             "splash": 0,
-            //投掷物图像
-            "throw": null,
+            //投掷物图像 shake=抖动
+            "projectile": "shake",
             //弹道速度 0表示立即
             "speed": 0
         },
@@ -57,7 +59,7 @@ export default {
         "gold": 0,
         //科技点
         "point": 0,
-        //生产间隔 毫秒
+        //刷兵间隔 毫秒
         "interval": 5000
     }
 }

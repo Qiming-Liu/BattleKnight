@@ -1,21 +1,21 @@
 import HealthPowerBar
     from "../tools/HealthPowerBar.mjs";
 import Loader
-    from "../units/Loader.mjs";
+    from "../objects/Loader.mjs";
 
-export default class units extends Phaser.Physics.Arcade.Sprite {
+export default class Unit extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, key, direction) {
         super(scene, x, x, key);
         scene.add.existing(this);
         scene.physics.add.existing(this);
         //获取地面
         this.ground = scene.ground;
-        //设置单位的位置
+        //设置位置
         this.setPosition(x, y);
-        //通过key得到此单位的默认数据
+        //通过key得到默认数据
         this.default = Loader.getDefault(key);
         if (this.default === undefined) {
-            throw '找不到此单位的数据'
+            throw ['找不到Loader.getDefault(key)', this]
         }
         //复制一遍数据当作实例的当前值
         this.current = JSON.parse(JSON.stringify(this.default));
@@ -43,13 +43,16 @@ export default class units extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.collider(this, scene.ground);
         //用来取消单位之间的碰撞
         this.collider = null;
-        //攻击抖动
-        this.shake = scene.plugins.get('rexshakepositionplugin').add(this, {
-            mode: 1, // 0 = effect 1 = behavior
-            duration: 100,
-            magnitude: 15,
-            magnitudeMode: 1, // 0 = constant 1 = decay
-        });
+        //预处理攻击方式
+        switch (this.current.battle.attack.projectile) {
+            case "shake":{
+                this.shake = scene.plugins.get('rexshakepositionplugin').add(this);
+                break;
+            }
+            default: {
+
+            }
+        }
 
         this.attackTarget = null;
         this.attackTime = this.current.battle.attack.interval;
@@ -100,7 +103,15 @@ export default class units extends Phaser.Physics.Arcade.Sprite {
                 if (damage <= 0) damage = 1;
             }
             //攻击动画
-            this.shake.shake();
+            switch (this.current.battle.attack.projectile) {
+                case "shake":{
+                    this.shake.shake(100, 10);
+                    break;
+                }
+                default: {
+
+                }
+            }
             //扣血
             if (damage > this.attackTarget.current.battle.health) {//这一下会把目标打死
                 this.attackTarget.current.battle.health = 0;
@@ -145,12 +156,9 @@ export default class units extends Phaser.Physics.Arcade.Sprite {
         } else if (attackAbleList.length === 1) {
             return attackAbleList[0];
         } else {
+            let t = this;
             attackAbleList.sort(function (a, b) {
-                if (this === undefined || a === undefined || b === undefined) {
-                    //check undefined bug here
-                    let i;
-                }
-                return Phaser.Math.Distance.Between(this.body.x, this.body.y, a.body.x, a.body.y) - Phaser.Math.Distance.Between(this.body.x, this.body.y, b.body.x, b.body.y)
+                return Phaser.Math.Distance.Between(t.body.x, t.body.y, a.body.x, a.body.y) - Phaser.Math.Distance.Between(t.body.x, t.body.y, b.body.x, b.body.y)
             });
             return attackAbleList[0];
         }
