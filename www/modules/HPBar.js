@@ -1,4 +1,4 @@
-export default class HealthPowerBarUnit {
+export default class HPBar {
     constructor(scene, x, y, width, maxHealth, maxPower) {
         this.healthBar = new Phaser.GameObjects.Graphics(scene);
         this.powerBar = new Phaser.GameObjects.Graphics(scene);
@@ -25,10 +25,6 @@ export default class HealthPowerBarUnit {
     draw(x, y) {
         this.healthBar.clear();
         this.powerBar.clear();
-
-        //offset
-        x = x - 32;
-        y = y - 64;
 
         //Health
         this.healthBar.fillStyle(0x000000);//bg

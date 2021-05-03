@@ -1,7 +1,7 @@
 import Target
     from "./Target.js";
-import HealthPowerBarBuilding
-    from "../tools/HealthPowerBarBuilding.mjs";
+import BuildingHPBar
+    from "../modules/BuildingHPBar.mjs";
 
 export default class Building extends Target {
     constructor(scene, x, y, key, direction) {
@@ -15,7 +15,7 @@ export default class Building extends Target {
             this.setScale(scale, scale);
         }
         //血条
-        this.bar = new HealthPowerBarBuilding(scene, x, y, this.displayWidth, this.default.battle.health, this.default.battle.power);
+        this.bar = new BuildingHPBar(scene, x, y, this.displayWidth, this.default.battle.health, this.default.battle.power);
         //建筑死亡淡出
         this.fade = scene.plugins.get('rexfadeplugin');
         //落地弹跳值

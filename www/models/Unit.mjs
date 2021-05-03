@@ -1,7 +1,7 @@
 import Target
     from "./Target.js";
-import HealthPowerBarUnit
-    from "../tools/HealthPowerBarUnit.mjs";
+import UnitHPBar
+    from "../modules/UnitHPBar.mjs";
 
 export default class Unit extends Target {
     constructor(scene, x, y, key, direction) {
@@ -15,7 +15,7 @@ export default class Unit extends Target {
             this.setOffset(128, 0)
         }
         //血条
-        this.bar = new HealthPowerBarUnit(scene, x, y, this.displayWidth, this.default.battle.health, this.default.battle.power);
+        this.bar = new UnitHPBar(scene, x, y, this.displayWidth, this.default.battle.health, this.default.battle.power);
         //落地弹跳值
         this.setBounce(0.4);
         //刷新

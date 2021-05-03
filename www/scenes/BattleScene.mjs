@@ -1,7 +1,7 @@
 import BaseScene
     from "./BaseScene.mjs";
 import UnitsFactory
-    from "../tools/UnitsFactory.mjs";
+    from "../modules/UnitsFactory.mjs";
 import Loader
     from "../objects/Loader.mjs";
 import Building
