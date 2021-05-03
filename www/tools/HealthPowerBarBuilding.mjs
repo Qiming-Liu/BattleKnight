@@ -26,7 +26,7 @@ export default class HealthPowerBarBuilding {
         this.healthBar.clear();
         this.powerBar.clear();
         //offset
-        x = x - 64;
+        x = x - 75;
         y = y + 241;
 
         //Health
