@@ -11,9 +11,9 @@ export default {
         "health": 10,
         "power": 0,
         "attack": {
-            "atk": 10,
+            "atk": 2,
             "interval": 1000,
-            "range": 60,
+            "range": 100,
             "splash": 0,
             "projectile": "shake",
             "speed": 0

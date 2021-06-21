@@ -1,5 +1,5 @@
 import HPBar
-    from "./HPBar.js";
+    from "./HPBar.mjs";
 
 export default class UnitHPBar extends HPBar {
     constructor(scene, x, y, width, maxHealth, maxPower) {

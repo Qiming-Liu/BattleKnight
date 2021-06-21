@@ -8,7 +8,7 @@ export default {
         "image": "objects/knight/Base01.png"
     },
     "battle": {
-        "health": 100,
+        "health": 1000,
         "power": 0,
         "attack": {
             "atk": 1,

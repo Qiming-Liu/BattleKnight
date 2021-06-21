@@ -1,11 +1,13 @@
 import BaseScene
     from "./BaseScene.mjs";
-import UnitsFactory
-    from "../modules/UnitsFactory.mjs";
 import Loader
     from "../objects/Loader.mjs";
+import UnitsFactory
+    from "../modules/UnitsFactory.mjs";
 import Building
     from "../models/Building.mjs";
+import Panel
+    from "../modules/Panel.mjs";
 
 export default class BattleScene extends BaseScene {
     constructor() {
@@ -23,6 +25,9 @@ export default class BattleScene extends BaseScene {
     }
 
     create() {
+        //panel
+        this.panel = new Panel(this,this.game.config.width * 0.5, this.game.config.height * 0.5 * 0.25,200,200);
+
         //background
         this.add.image(this.game.config.width * 0.5, this.game.config.height * 0.5 * 0.75, 'background');
         this.ground = this.physics.add.staticGroup();

@@ -11,9 +11,9 @@ export default {
         "health": 10,
         "power": 0,
         "attack": {
-            "atk": 100,
+            "atk": 3,
             "interval": 1000,
-            "range": 60,
+            "range": 100,
             "splash": 0,
             "projectile": "shake",
             "speed": 0
@@ -25,7 +25,7 @@ export default {
     },
     "skills": [],
     "move": {
-        "speed": 160,
+        "speed": 100,
         "height": 0
     },
     "cost": {

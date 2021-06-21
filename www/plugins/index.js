@@ -1,7 +1,7 @@
 import StartScene
-    from "./scenes/StartScene.mjs";
+    from "../scenes/StartScene.mjs";
 import BattleScene
-    from "./scenes/BattleScene.mjs";
+    from "../scenes/BattleScene.mjs";
 
 document.addEventListener('deviceready', onDeviceReady, false);
 function onDeviceReady() {

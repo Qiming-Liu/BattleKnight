@@ -8,8 +8,9 @@ import knightKnightLV1
 
 export default class Loader {
     static Load(scene) {
-        scene.load.plugin('rexshakepositionplugin', '../rexshakepositionplugin.min.js', true);
-        scene.load.plugin('rexfadeplugin', '../rexfadeplugin.min.js', true);
+        scene.load.plugin('rexshakepositionplugin', '../plugins/rexshakepositionplugin.min.js', true);
+        scene.load.plugin('rexfadeplugin', '../plugins/rexfadeplugin.min.js', true);
+        scene.load.scenePlugin('rexuiplugin', '../plugins/rexuiplugin.min.js', 'rexUI', 'rexUI');
 
         this.loadKey(scene, 'knightBase01');
         this.loadKey(scene, 'knightSavage');

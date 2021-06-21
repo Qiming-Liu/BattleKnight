@@ -109,7 +109,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
                 if (enemy[i].current.description.type === 'building') {//如果目标是建筑, 不计算高度
                     distance = Phaser.Math.Distance.Between(this.body.x, 0, enemy[i].body.x, 0);
                 } else {
-                    distance = Phaser.Math.Distance.Between(this.body.x, this.body.y, enemy[i].x, enemy[i].y);
+                    distance = Phaser.Math.Distance.Between(this.body.x, this.body.y, enemy[i].body.x, enemy[i].body.y);
                 }
                 if (distance <= this.current.battle.attack.range) {//在攻击范围内
                     //加入可攻击列表

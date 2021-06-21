@@ -10,7 +10,7 @@ export default class UnitsFactory {
         if (direction === 'left') {
             this.change(scene, 'knightSavage', direction);
         } else {
-            this.change(scene, 'knightKnightLV1', direction);
+            this.change(scene, 'knightSavage', direction);
         }
     }
 

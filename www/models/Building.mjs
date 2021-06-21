@@ -1,5 +1,5 @@
 import Target
-    from "./Target.js";
+    from "./Target.mjs";
 import BuildingHPBar
     from "../modules/BuildingHPBar.mjs";
 
@@ -10,7 +10,7 @@ export default class Building extends Target {
         let scale = 0.6;
         if (this.direction === 'left') {
             this.setScale(-1 * scale, scale);
-            this.setOffset(256, 0)
+            this.setOffset(128, 0)
         } else {
             this.setScale(scale, scale);
         }
@@ -34,7 +34,7 @@ export default class Building extends Target {
                     if (this.attackTarget.current.description.type === 'building') {//如果目标是建筑, 不计算高度
                         distance = Phaser.Math.Distance.Between(this.body.x, 0, this.attackTarget.body.x, 0);
                     } else {
-                        distance = Phaser.Math.Distance.Between(this.body.x, this.body.y, this.attackTarget.x, this.attackTarget.y);
+                        distance = Phaser.Math.Distance.Between(this.body.x, this.body.y, this.attackTarget.body.x, this.attackTarget.body.y);
                     }
                     if (distance <= this.current.battle.attack.range) {//在攻击范围内
                         //攻击
