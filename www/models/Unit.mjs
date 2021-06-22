@@ -53,6 +53,9 @@ export default class Unit extends Target {
                 }
             }
         } else {//自己是死人 播放死亡旋转
+            try {
+                this.setVelocityX(0);
+            }catch (e) {}
             if (this.angle < 90 && this.angle > -90) {
                 this.setOrigin(0.5, 1);
                 this.angle += (this.direction === 'left' ? -1 : 1) * 2;

@@ -13,7 +13,7 @@ export default {
         "attack": {
             "atk": 3,
             "interval": 1000,
-            "range": 100,
+            "range": 70,
             "splash": 0,
             "projectile": "shake",
             "speed": 0
@@ -25,12 +25,12 @@ export default {
     },
     "skills": [],
     "move": {
-        "speed": 100,
+        "speed": 200,
         "height": 0
     },
     "cost": {
         "gold": 0,
         "point": 0,
-        "interval": 10000
+        "interval": 1000
     }
 }

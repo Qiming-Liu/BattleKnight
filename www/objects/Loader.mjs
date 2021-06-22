@@ -5,13 +5,8 @@ import knightSavage
 import knightKnightLV1
     from '../objects/knight/KnightLV1.mjs'
 
-
 export default class Loader {
-    static Load(scene) {
-        scene.load.plugin('rexshakepositionplugin', '../plugins/rexshakepositionplugin.min.js', true);
-        scene.load.plugin('rexfadeplugin', '../plugins/rexfadeplugin.min.js', true);
-        scene.load.scenePlugin('rexuiplugin', '../plugins/rexuiplugin.min.js', 'rexUI', 'rexUI');
-
+    static preload(scene) {
         this.loadKey(scene, 'knightBase01');
         this.loadKey(scene, 'knightSavage');
         this.loadKey(scene, 'knightKnightLV1');

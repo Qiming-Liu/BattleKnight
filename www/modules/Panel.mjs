@@ -1,76 +1,74 @@
+import ProgressBar from "./ProgressBar.mjs";
+import Pool from "./Pool.mjs";
+
 export default class Panel {
-    constructor(scene, x, y, width, height) {
-        const COLOR_PRIMARY = 0x4e342e;
-        const COLOR_LIGHT = 0x7b5e57;
-        const COLOR_DARK = 0x260e04;
-
-        let data = {
-            name: 'Rex',
-            skills: [
-                {name: 'A'},
-                {name: 'B'},
-                {name: 'C'},
-                {name: 'D'},
-                {name: 'E'},
-            ],
-            items: [
-                {name: 'A'},
-                {name: 'B'},
-                {name: 'C'},
-                {name: 'D'},
-                {name: 'E'},
-                {name: 'F'},
-                {name: 'G'},
-                {name: 'H'},
-                {name: 'I'},
-                {name: 'J'},
-                {name: 'K'},
-                {name: 'L'},
-                {name: 'M'},
-            ],
-
+    constructor(scene) {
+        let t = this;
+        this.scene = scene;
+        this.panel = scene.add.image(scene.game.config.width * 0.5, scene.game.config.height * 0.875, 'panel');
+        this.dice = {
+            image: scene.add.image(scene.game.config.width * 0.05, scene.game.config.height * 0.875, 'Dice_1').setScale(0.75),
+            number: 1
         };
+        this.pieces = [];
+        this.onRefresh(t);
+        this.bar = new ProgressBar(scene, scene.game.config.width * 0.095, scene.game.config.height * 0.94, scene.game.config.width * 0.431);
+        this.pool = new Pool(scene, scene.game.config.width * 0.6, scene.game.config.height * 0.8, 100, 200);
+        this.refresh = scene.add.image(scene.game.config.width * 0.72, scene.game.config.height * 0.875, 'Refresh').setScale(0.75).setInteractive();
+        this.refresh.on('pointerup', function () {
+            t.onRefresh(t);
+        }, scene);
+        this.upgrade = scene.add.image(scene.game.config.width * 0.79, scene.game.config.height * 0.875, 'Upgrade').setScale(0.75).setInteractive();
+        this.upgrade.on('pointerup', function () {
+            t.onUpgrade(t);
+        }, scene);
+        this.skill = scene.add.image(scene.game.config.width * 0.86, scene.game.config.height * 0.875, 'Skill').setScale(0.75).setInteractive();
+        this.skill.on('pointerup', function () {
+            t.onSkill(t);
+        }, scene);
+        this.setting = scene.add.image(scene.game.config.width * 0.95, scene.game.config.height * 0.875, 'Setting').setScale(0.75).setInteractive();
+        this.setting.on('pointerup', function () {
+            t.onSetting(t);
+        }, scene);
+    }
 
-        let config = {
-            x: x,
-            y: y,
-            width: width,
-            height: height,
-            scrollMode: 1,
-            background: scene.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
-            panel: {
-                child: createPanel(this, data),
-                mask: {
-                    padding: 1
-                },
-            },
-            slider: {
-                track: scene.rexUI.add.roundRectangle(0, 0, 20, 10, 10, COLOR_DARK).setDepth(1),
-                thumb: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 13, COLOR_LIGHT).setDepth(1),
-            },
+    onRefresh(t) {
+        for (let i = 0; i < 6; i++) {
+            try {
+                t.pieces[i].image.destroy();
+            } catch (e) {
+            }
+            let piece = t.randomPiece();
+            t.pieces.push({
+                image: t.scene.add.image(t.scene.game.config.width * (0.12 + 0.075 * i), t.scene.game.config.height * 0.84, piece).setScale(0.6),
+                key: piece
+            })
+        }
+    }
 
-            space: {
-                left: 10,
-                right: 10,
-                top: 10,
-                bottom: 10,
-                panel: 10,
+    onUpgrade(t) {
+        if (t.dice.number < 6) {
+            if (t.bar.getValue() >= 10) {
+                try {
+                    t.dice.image.destroy();
+                } catch (e) {
+                }
+                t.bar.costValue(10);
+                t.dice.number++;
+                t.dice.image = t.scene.add.image(t.scene.game.config.width * 0.05, t.scene.game.config.height * 0.875, 'Dice_' + t.dice.number).setScale(0.75);
             }
         }
-
-        let scrollablePanel = scene.rexUI.add.scrollablePanel(config).layout();
-        let panel = scrollablePanel.getElement('panel');
-        let print = scene.add.text(0, 0, '');
-        scene.rexUI.setChildrenInteractive(scrollablePanel, {
-            targets: [
-                panel.getByName('skills', true),
-                panel.getByName('items', true)
-            ]
-        })
-            .on('child.click', function (child) {
-                let category = child.getParentSizer().name;
-                print.text += `${category}:${child.text}\n`;
-            });
     }
-    //https://codepen.io/rexrainbow/pen/WNRLZxW?editors=0010
+
+    onSkill(t) {
+
+    }
+
+    onSetting(t) {
+        // window.v.onSettingInBattle();
+    }
+
+    randomPiece() {
+        return "knightSavage";
+    }
 }

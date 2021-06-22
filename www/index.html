@@ -2,18 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>
         game</title>
-    <script src="./plugins/phaser.min.js"></script>
     <style type="text/css">
-        body {
-            margin: 0;
+        * {
+            margin:0;
+            padding:0;
         }
     </style>
+    <link type="text/css" rel="stylesheet" href="./app/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="./app/bootstrap-vue.min.css"/>
 </head>
 <body>
-    <div id="phaser-game"></div>
-    <script src="cordova.js"></script>
-    <script type="module" src="./plugins/index.js"></script>
+<div id="game"></div>
+<div id="vue"></div>
+<!--<script src="cordova.js"></script>-->
+<!--<script src="./app/vue.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.js"></script>-->
+<!--<script src="./app/bootstrap-vue.min.js"></script>-->
+<script src="./app/phaser.min.js"></script>
+<script type="module" src="./app/index.js"></script>
 </body>
 </html>

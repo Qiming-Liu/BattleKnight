@@ -73,7 +73,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
                 attackTarget.current.battle.health = 0;
                 if (attackTarget.current.description.type === 'building') {//建筑死亡
                     //淡出
-                    attackTarget.fade.fadeOutDestroy(attackTarget, 2000);
+                    attackTarget.fade.fadeOutDestroy(attackTarget, 1500);
                     attackTarget.bar.destroy();
                 } else {//非建筑死亡
                     //取消死亡单位碰撞

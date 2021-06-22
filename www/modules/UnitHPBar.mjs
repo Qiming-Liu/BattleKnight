@@ -9,7 +9,7 @@ export default class UnitHPBar extends HPBar {
     draw(x, y) {
         //offset
         x = x - 32;
-        y = y - 64;
+        y = y - 54;
         super.draw(x, y);
     }
 }

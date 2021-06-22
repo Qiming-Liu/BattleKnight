@@ -2,12 +2,15 @@ import StartScene
     from "../scenes/StartScene.mjs";
 import BattleScene
     from "../scenes/BattleScene.mjs";
+import VueUI
+    from "../modules/VueUI.mjs";
 
 document.addEventListener('deviceready', onDeviceReady, false);
+
 function onDeviceReady() {
-    let config = {
+    window.game = new Phaser.Game({
         type: Phaser.AUTO,
-        parent: 'phaser-game',
+        parent: 'game',
         width: 1280,
         height: 720,
         scene: [StartScene, BattleScene],
@@ -20,16 +23,21 @@ function onDeviceReady() {
                 debug: true
             }
         }
-    };
-
-    new Phaser.Game(config);
+    });
+    window.vue = new VueUI();
 }
-//用于js调试
+
+//development
 let config = {
     type: Phaser.AUTO,
-    parent: 'phaser-game',
+    parent: 'game',
     width: 1280,
     height: 720,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    autoRound: false,
     scene: [StartScene, BattleScene],
     physics: {
         default: 'arcade',
@@ -41,5 +49,5 @@ let config = {
         }
     }
 };
-
 window.game = new Phaser.Game(config);
+// window.vue = new VueUI();

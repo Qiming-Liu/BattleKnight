@@ -17,21 +17,44 @@ export default class BattleScene extends BaseScene {
     }
 
     preload() {
-        //加载游戏资源
         this.load.setBaseURL('./assets/');
+
+        //scenes
         this.load.image('background', 'scenes/battle/background.png');
+        this.load.image('panel', 'scenes/battle/panel.png');
         this.load.image('ground', 'scenes/battle/ground.png');
-        Loader.Load(this);
+
+        //panel
+        this.load.image('Dice_1', 'panel/Dice_1.png');
+        this.load.image('Dice_2', 'panel/Dice_2.png');
+        this.load.image('Dice_3', 'panel/Dice_3.png');
+        this.load.image('Dice_4', 'panel/Dice_4.png');
+        this.load.image('Dice_5', 'panel/Dice_5.png');
+        this.load.image('Dice_6', 'panel/Dice_6.png');
+        this.load.image('Refresh', 'panel/Refresh.png');
+        this.load.image('Skill', 'panel/Skill.png');
+        this.load.image('Upgrade', 'panel/Upgrade.png');
+        this.load.image('Setting', 'panel/Setting.png');
+
+        //plugin
+        this.load.plugin('rexshakepositionplugin', '../app/rexshakepositionplugin.min.js', true);
+        this.load.plugin('rexfadeplugin', '../app/rexfadeplugin.min.js', true);
+
+        //objects
+        Loader.preload(this);
     }
 
     create() {
-        //panel
-        this.panel = new Panel(this,this.game.config.width * 0.5, this.game.config.height * 0.5 * 0.25,200,200);
+        //Background
+        this.add.image(this.game.config.width * 0.5, this.game.config.height * 0.375, 'background');
 
-        //background
-        this.add.image(this.game.config.width * 0.5, this.game.config.height * 0.5 * 0.75, 'background');
+        //Panel
+        this.panel = new Panel(this);
+        this.panel.bar.start(this);
+
+        //Ground
         this.ground = this.physics.add.staticGroup();
-        this.ground.create(this.game.config.width * 0.5, this.game.config.height * 0.69, 'ground', null, false, true);
+        this.ground.create(this.game.config.width * 0.5, this.game.config.height * 0.71, 'ground', null, false, true);
 
         //基地
         this.left.Base = new Building(this, this.game.config.width * 0.08, 0, 'knightBase01', 'left');
@@ -43,20 +66,12 @@ export default class BattleScene extends BaseScene {
     }
 
     update(time, delta) {
-        if (this.right.UnitsFactory.UnitsList.length > this.left.UnitsFactory.UnitsList.length) {
+        if (Phaser.Math.Between(0, 1) === 0) {
             this.left.UnitsFactory.tick(this.right, delta);
             this.right.UnitsFactory.tick(this.left, delta);
-        } else if (this.right.UnitsFactory.UnitsList.length < this.left.UnitsFactory.UnitsList.length) {
-            this.right.UnitsFactory.tick(this.left, delta);
-            this.left.UnitsFactory.tick(this.right, delta);
         } else {
-            if (Phaser.Math.Between(0, 1) === 0) {
-                this.left.UnitsFactory.tick(this.right, delta);
-                this.right.UnitsFactory.tick(this.left, delta);
-            } else {
-                this.right.UnitsFactory.tick(this.left, delta);
-                this.left.UnitsFactory.tick(this.right, delta);
-            }
+            this.right.UnitsFactory.tick(this.left, delta);
+            this.left.UnitsFactory.tick(this.right, delta);
         }
         this.left.Base.tick(this.right.UnitsFactory.UnitsList, delta);
         this.right.Base.tick(this.left.UnitsFactory.UnitsList, delta);

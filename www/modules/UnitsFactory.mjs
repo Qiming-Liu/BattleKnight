@@ -3,10 +3,10 @@ import Unit
 import Loader
     from "../objects/Loader.mjs";
 
-export default class UnitsFactory {
+export default class UnitsFactory {// need 400 units limitation
     constructor(scene, direction) {
         this.UnitsList = [];
-        this.timer = scene.time.addEvent();
+        this.factoryTimer = scene.time.addEvent();
         if (direction === 'left') {
             this.change(scene, 'knightSavage', direction);
         } else {
@@ -16,8 +16,8 @@ export default class UnitsFactory {
 
     change(scene, key, direction) {
         let t = this;
-        this.timer.remove();
-        this.timer = scene.time.addEvent({
+        this.factoryTimer.remove();
+        this.factoryTimer = scene.time.addEvent({
             delay: Loader.getDefault(key).cost.interval,
             callback: function () {
                 t.produce(scene, key, direction);
