@@ -35,10 +35,12 @@ export default class BattleScene extends BaseScene {
         this.load.image('Skill', 'panel/Skill.png');
         this.load.image('Upgrade', 'panel/Upgrade.png');
         this.load.image('Setting', 'panel/Setting.png');
+        this.load.image('Bin', 'panel/Bin.png');
 
         //plugin
         this.load.plugin('rexshakepositionplugin', '../app/rexshakepositionplugin.min.js', true);
         this.load.plugin('rexfadeplugin', '../app/rexfadeplugin.min.js', true);
+        this.load.plugin('rexdragplugin', '../app/rexdragplugin.min.js', true);
 
         //objects
         Loader.preload(this);
