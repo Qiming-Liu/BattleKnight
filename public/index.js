@@ -5,7 +5,7 @@ import VueUI
 import SocketIO
     from "./modules/SocketIO.mjs";
 
-let config = {
+window.config = {
     type: Phaser.AUTO,
     parent: 'game',
     width: 1280,
@@ -26,6 +26,9 @@ let config = {
         }
     }
 };
-window.game = new Phaser.Game(config);
 window.vue = new VueUI();
 window.io = new SocketIO();
+window.gameStart = function (gameInfo) {
+    window.gameInfo = gameInfo;
+    window.game = new Phaser.Game(window.config);
+}

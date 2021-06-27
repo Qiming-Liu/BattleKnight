@@ -18,9 +18,9 @@ export default class BattleScene extends Phaser.Scene {
         this.load.setBaseURL('./assets/');
 
         //scenes
-        this.load.image('background', 'scenes/battle/background.png');
-        this.load.image('panel', 'scenes/battle/panel.png');
-        this.load.image('ground', 'scenes/battle/ground.png');
+        this.load.image('background', 'scenes/background.png');
+        this.load.image('panel', 'scenes/panel.png');
+        this.load.image('ground', 'scenes/ground.png');
 
         //panel
         this.load.image('Dice_1', 'panel/Dice_1.png');
@@ -50,7 +50,6 @@ export default class BattleScene extends Phaser.Scene {
 
         //Panel
         this.panel = new Panel(this);
-        this.panel.bar.start(this);
 
         //Ground
         this.ground = this.physics.add.staticGroup();
@@ -63,6 +62,9 @@ export default class BattleScene extends Phaser.Scene {
         //刷兵
         this.left.UnitsFactory = new UnitsFactory(this, 'left');
         this.right.UnitsFactory = new UnitsFactory(this, 'right');
+
+        //Finish loading
+        window.io.finishLoading();
     }
 
     update(time, delta) {
@@ -75,5 +77,9 @@ export default class BattleScene extends Phaser.Scene {
         }
         this.left.Base.tick(this.right.UnitsFactory.UnitsList, delta);
         this.right.Base.tick(this.left.UnitsFactory.UnitsList, delta);
+    }
+
+    start() {
+        this.panel.bar.start(this);
     }
 }

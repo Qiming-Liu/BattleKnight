@@ -4,8 +4,8 @@ export default {
         "intro": "最重要的建筑, 被击毁就会游戏失败",
         "parent": "knight",
         "type": "building",
-        "icon": "objects/knight/Base01.png",
-        "image": "objects/knight/Base01.png"
+        "icon": "objects/building/Base01.png",
+        "image": "objects/building/Base01.png"
     },
     "battle": {
         "health": 1000,

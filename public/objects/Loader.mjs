@@ -1,9 +1,9 @@
 import knightBase01
-    from '../objects/knight/Base01.mjs'
+    from '../objects/building/Base01.mjs'
 import knightSavage
-    from '../objects/knight/Savage.mjs'
+    from '../objects/units/Savage.mjs'
 import knightKnightLV1
-    from '../objects/knight/KnightLV1.mjs'
+    from '../objects/units/KnightLV1.mjs'
 
 export default class Loader {
     static preload(scene) {

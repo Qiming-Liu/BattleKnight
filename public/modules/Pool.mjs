@@ -46,16 +46,23 @@ export default class Pool {
         return ((point.x > x && point.x < x + width && point.y > y && point.y < y + height));
     }
 
-    putPiece(t) {
+    putPiece(t, pay) {
         let flag = true;
         //level up once
         for (let i = 0; i < this.pieces.length; i++) {
             if ((this.pieces[i].key === t.key) && (this.pieces[i].level === t.level)) {
-                t.onDragend(t);
-                t.destroy();
-                this.pieces[i].level++;
-                t.textCreate(this.pieces[i], 0.015, 0.045);
-                flag = false;
+                if(!pay){
+                    t.destroy();
+                    this.pieces[i].level++;
+                    t.textCreate(this.pieces[i], 0.015, 0.045);
+                    flag = false;
+                } else if (t.costEnough(t)){
+                    t.costThatValue(t);
+                    t.destroy();
+                    this.pieces[i].level++;
+                    t.textCreate(this.pieces[i], 0.015, 0.045);
+                    flag = false;
+                }
             }
         }
         if (flag) {
@@ -110,7 +117,7 @@ export default class Pool {
         this.pieces = [];
         for (let i = 0; i < temp.length; i++) {
             if (i !== t) {
-                this.putPiece(temp[i]);
+                this.putPiece(temp[i], false);
             }
         }
     }
@@ -122,7 +129,6 @@ export default class Pool {
             for (let i = 0; i < this.pieces.length; i++) {
                 for (let j = i + 1; j < this.pieces.length; j++) {
                     if ((this.pieces[i].key === this.pieces[j].key) && (this.pieces[i].level === this.pieces[j].level)) {
-                        this.pieces[j].onDragend(this.pieces[j]);
                         this.pieces[j].destroy();
                         this.pieces[i].level++;
                         this.pieces[i].textCreate(this.pieces[i], 0.015, 0.045);

@@ -1,3 +1,5 @@
+import Loader from "../objects/Loader.mjs";
+
 export default class Piece {
     constructor(scene, x, y, scale, key, level, i) {
         let t = this;
@@ -36,13 +38,12 @@ export default class Piece {
                         break;
                     }
                     case 'pool': {
-                        t.scene.panel.pool.putPiece(t);
+                        t.scene.panel.pool.putPiece(t, true);
                         break;
                     }
                     default: {
                         let targetPiece = t.scene.panel.pieces[area];
                         if ((targetPiece.key === t.key) && (targetPiece.level === t.level)) {//level up
-                            t.onDragend(t);
                             t.destroy();
                             targetPiece.level++;
                             t.textCreate(targetPiece, 0.015, 0.055);
@@ -73,6 +74,14 @@ export default class Piece {
         } catch (e) {
         }
         t.text = t.scene.add.text(t.x - t.scene.game.config.width * ws, t.y - t.scene.game.config.height * hs, 'Lv ' + t.level);
+    }
+
+    costEnough(t) {
+        return t.scene.panel.bar.getValue() > Loader.getDefault(t.key).cost;
+    }
+
+    costThatValue(t) {
+        t.scene.panel.bar.costValue(Loader.getDefault(t.key).cost);
     }
 
     destroy() {

@@ -4,8 +4,8 @@ export default {
         "intro": "带护甲的基础单位, 攻击力较低",
         "parent": "knight",
         "type": "unit",
-        "icon": "objects/knight/KnightLV1.png",
-        "image": "objects/knight/KnightLV1.png"
+        "icon": "objects/units/KnightLV1.png",
+        "image": "objects/units/KnightLV1.png"
     },
     "battle": {
         "health": 10,
@@ -28,9 +28,8 @@ export default {
         "speed": 50,
         "height": 0
     },
-    "cost": {
-        "gold": 0,
-        "point": 0,
-        "interval": 10000
-    }
+    //花费
+    "cost": 2,
+    //刷兵间隔 毫秒
+    "interval": 2000
 }

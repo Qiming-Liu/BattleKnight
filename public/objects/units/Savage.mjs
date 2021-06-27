@@ -4,8 +4,8 @@ export default {
         "intro": "最基础的单位",
         "parent": "knight",
         "type": "unit",
-        "icon": "objects/knight/Savage.png",
-        "image": "objects/knight/Savage.png"
+        "icon": "objects/units/Savage.png",
+        "image": "objects/units/Savage.png"
     },
     "battle": {
         "health": 10,
@@ -28,9 +28,8 @@ export default {
         "speed": 200,
         "height": 0
     },
-    "cost": {
-        "gold": 0,
-        "point": 0,
-        "interval": 1000
-    }
+    //花费
+    "cost": 1,
+    //刷兵间隔 毫秒
+    "interval": 5000
 }
