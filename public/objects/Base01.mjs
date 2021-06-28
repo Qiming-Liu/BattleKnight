@@ -3,24 +3,24 @@ export default function (level) {
         //描述
         description: {
             //名字
-            name: '民兵',
+            name: '基地',
             //介绍文字
-            intro: '最基础的单位',
+            intro: '最重要的建筑, 被击毁就会游戏失败',
             //类型 unit=刷兵单位 hero=特种单位 building=建筑
-            type: 'unit',
+            type: 'building',
             //图像
-            image: 'objects/units/Savage.png'
+            image: 'objects/building/Base01.png'
         },
         //战斗
         battle: {
             //最大生命值
-            health: 10,
+            health: 1000,
             //最大能量值
             power: 0,
             //攻击
             attack: {
                 //攻击力
-                atk: 3,
+                atk: 0,
                 //攻击间隔 毫秒
                 interval: 1000,
                 //攻击范围
@@ -51,8 +51,8 @@ export default function (level) {
             //
         },
         //花费
-        cost: 4,
+        cost: 0,
         //刷兵间隔 毫秒
-        interval: 5000
+        interval: 50000
     }
 }

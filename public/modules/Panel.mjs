@@ -1,7 +1,7 @@
 import ProgressBar from "./ProgressBar.mjs";
 import Pool from "./Pool.mjs";
-import Piece from "../models/Piece.js";
 import Bin from "./Bin.mjs";
+import Piece from "../models/Piece.js";
 
 export default class Panel {
     constructor(scene) {
@@ -84,6 +84,6 @@ export default class Panel {
     }
 
     randomPiece() {
-        return "knightSavage";
+        return "Savage";
     }
 }

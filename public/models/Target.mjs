@@ -1,8 +1,8 @@
 import Loader
-    from "../objects/Loader.mjs";
+    from "../modules/Loader.mjs";
 
 export default class Target extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, key, direction) {
+    constructor(scene, x, y, key, level, direction) {
         super(scene, x, y, key);
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -11,9 +11,9 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
         //设置位置
         this.setPosition(x, y);
         //通过key得到默认数据
-        this.default = Loader.getDefault(key);
+        this.default = Loader.getDefault(key, level);
         if (this.default === undefined) {
-            throw ['找不到Loader.getDefault(key)', this]
+            throw ['找不到Loader.getDefault(key)', key]
         }
         //复制一遍数据当作实例的当前值
         this.current = JSON.parse(JSON.stringify(this.default));

@@ -14,13 +14,13 @@ export default function (level) {
         //战斗
         battle: {
             //最大生命值
-            health: 10,
+            health: 10 + 5 * level,
             //最大能量值
             power: 0,
             //攻击
             attack: {
                 //攻击力
-                atk: 3,
+                atk: 3 + level,
                 //攻击间隔 毫秒
                 interval: 1000,
                 //攻击范围

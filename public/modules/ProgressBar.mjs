@@ -1,11 +1,12 @@
 export default class ProgressBar {
     constructor(scene, x, y, width) {
         this.graphics = new Phaser.GameObjects.Graphics(scene);
+        this.scene = scene;
         this.text = [];
         this.x = x;
         this.y = y;
         this.width = width;
-        this.max = 1100;
+        this.max = 11000;
         this.value = 0;
         this.draw(scene);
         this.graphicsTimer = scene.time.addEvent();
@@ -44,19 +45,12 @@ export default class ProgressBar {
         this.graphics.strokePath();
     }
 
-    start(scene) {
-        let t = this;
+    tick(delta) {
         this.graphicsTimer.remove();
-        this.graphicsTimer = scene.time.addEvent({
-            delay: 40,
-            callback: function () {
-                if (t.value !== t.max) {
-                    t.value++;
-                    t.draw(scene, t.x, t.y);
-                }
-            },
-            loop: true
-        });
+        if (this.value < this.max) {
+            this.value += delta;
+            this.draw(this.scene, this.x, this.y);
+        }
     }
 
     getValue() {

@@ -1,4 +1,4 @@
-import Loader from "../objects/Loader.mjs";
+import Loader from "../modules/Loader.mjs";
 
 export default class Piece {
     constructor(scene, x, y, scale, key, level, i) {
@@ -13,6 +13,7 @@ export default class Piece {
         this.image.drag = scene.plugins.get('rexdragplugin').add(this.image);
         this.textCreate(this, 0.015, 0.055);
         this.putInPool = false;
+        this.interval = 0;
         this.onDrag(t);
     }
 
@@ -77,11 +78,26 @@ export default class Piece {
     }
 
     costEnough(t) {
-        return t.scene.panel.bar.getValue() > Loader.getDefault(t.key).cost;
+        return t.scene.panel.bar.getValue() > Loader.getDefault(t.key, 0).cost;
     }
 
     costThatValue(t) {
-        t.scene.panel.bar.costValue(Loader.getDefault(t.key).cost);
+        t.scene.panel.bar.costValue(Loader.getDefault(t.key, 0).cost);
+    }
+
+    tick(delta) {
+        if (this.putInPool) {
+            this.interval += delta;
+            if (delta > Loader.getDefault(this.key, 0).interval) {
+                this.interval = 0;
+                //emit
+                window.io.socket.emit('produce', {
+                    key: this.key,
+                    level: this.level,
+                    gameInfo: window.gameInfo
+                })
+            }
+        }
     }
 
     destroy() {

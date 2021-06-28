@@ -4,8 +4,8 @@ import UnitHPBar
     from "../modules/UnitHPBar.mjs";
 
 export default class Unit extends Target {
-    constructor(scene, x, y, key, direction) {
-        super(scene, x, y, key, direction);
+    constructor(scene, x, y, key, level, direction) {
+        super(scene, x, y, key, level, direction);
         //缩放翻转
         let scale = 0.5;
         if (this.direction === 'left') {
@@ -55,7 +55,8 @@ export default class Unit extends Target {
         } else {//自己是死人 播放死亡旋转
             try {
                 this.setVelocityX(0);
-            }catch (e) {}
+            } catch (e) {
+            }
             if (this.angle < 90 && this.angle > -90) {
                 this.setOrigin(0.5, 1);
                 this.angle += (this.direction === 'left' ? -1 : 1) * 2;

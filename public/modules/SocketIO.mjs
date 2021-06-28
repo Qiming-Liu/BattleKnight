@@ -2,16 +2,6 @@ export default class SocketIO {
     constructor() {
         this.socket = io.connect(window.location.href, {reconnection: false});
 
-        this.socket.on('connect', () => {
-            console.log(this.socket.id);
-        });
-        this.socket.on('disconnect', () => {
-            console.log(this.socket.id);
-        });
-        this.socket.on('error', error => {
-            console.log([this.socket.id, error]);
-        });
-
         this.socket.on("room", msg => {
             switch (msg) {
                 case 'exist':{
@@ -19,7 +9,7 @@ export default class SocketIO {
                         title: 'Error',
                         variant: 'danger',
                         autoHideDelay: 3000
-                    })
+                    });
                     break;
                 }
                 case 'unexist':{
@@ -27,19 +17,41 @@ export default class SocketIO {
                         title: 'Error',
                         variant: 'danger',
                         autoHideDelay: 3000
-                    })
+                    });
+                    break;
+                }
+                case 'created':{
+                    window.vue.vueObject.$bvToast.toast(`The room is ready.`, {
+                        title: 'Ready',
+                        variant: 'success',
+                        autoHideDelay: 3000
+                    });
+                    window.vue.vueObject.showOverlay = true;
                     break;
                 }
             }
         });
 
         this.socket.on('gameStart', game => {
-            window.vue.hide('vue');
             window.gameStart(game);
         });
 
+        this.socket.on('gameOver', () => {
+            window.vue.vueObject.$bvToast.toast(`Your opponent left the game.`, {
+                title: 'Game Over',
+                variant: 'success',
+                autoHideDelay: 3000
+            });
+        });
+
         this.socket.on('allFinishLoading', () => {
-            window.game.scene.scenes[0].start();
+            window.vue.hide('vue');
+            window.vue.show('game');
+            window.game.scene.scenes[0].started = true;
+        });
+
+        this.socket.on('produce', piece => {
+            window.game.scene.scenes[0][piece.direction].UnitsFactory.produce(window.game.scene.scenes[0], piece.key, piece.level);
         });
     }
 

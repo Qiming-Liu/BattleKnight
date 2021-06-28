@@ -1,5 +1,5 @@
 import Loader
-    from "../objects/Loader.mjs";
+    from "../modules/Loader.mjs";
 import UnitsFactory
     from "../modules/UnitsFactory.mjs";
 import Building
@@ -56,30 +56,28 @@ export default class BattleScene extends Phaser.Scene {
         this.ground.create(this.game.config.width * 0.5, this.game.config.height * 0.71, 'ground', null, false, true);
 
         //基地
-        this.left.Base = new Building(this, this.game.config.width * 0.08, 0, 'knightBase01', 'left');
-        this.right.Base = new Building(this, this.game.config.width * 0.92, 0, 'knightBase01', 'right');
+        this.left.Base = new Building(this, this.game.config.width * 0.08, 0, 'Base01', 'left');
+        this.right.Base = new Building(this, this.game.config.width * 0.92, 0, 'Base01', 'right');
 
         //刷兵
         this.left.UnitsFactory = new UnitsFactory(this, 'left');
         this.right.UnitsFactory = new UnitsFactory(this, 'right');
 
         //Finish loading
+        this.started = false;
         window.io.finishLoading();
     }
 
     update(time, delta) {
-        if (Phaser.Math.Between(0, 1) === 0) {
-            this.left.UnitsFactory.tick(this.right, delta);
-            this.right.UnitsFactory.tick(this.left, delta);
-        } else {
+        if (this.started) {
             this.right.UnitsFactory.tick(this.left, delta);
             this.left.UnitsFactory.tick(this.right, delta);
+            this.left.Base.tick(this.right.UnitsFactory.UnitsList, delta);
+            this.right.Base.tick(this.left.UnitsFactory.UnitsList, delta);
+            this.panel.bar.tick(delta);
+            for (let i = 0; i < this.panel.pool.pieces.length; i++) {
+                this.panel.pool.pieces[i].tick(delta);
+            }
         }
-        this.left.Base.tick(this.right.UnitsFactory.UnitsList, delta);
-        this.right.Base.tick(this.left.UnitsFactory.UnitsList, delta);
-    }
-
-    start() {
-        this.panel.bar.start(this);
     }
 }

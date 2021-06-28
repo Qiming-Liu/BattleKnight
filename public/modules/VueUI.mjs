@@ -1,7 +1,7 @@
 export default class VueUI {
     constructor() {
         document.getElementById('vue').innerHTML = `
-        <div>
+        <b-overlay :show="showOverlay" rounded="sm">
             <b-card
               title="Battle Knight"
               img-src="./assets/scenes/background.png"
@@ -21,12 +21,13 @@ export default class VueUI {
             </b-row>
             
             </b-card>
-        </div>
+        </b-overlay>
         `
         this.vueObject = new Vue({
             el: '#vue',
             data: function () {
                 return {
+                    showOverlay: false,
                     roomNumber: ''
                 };
             },

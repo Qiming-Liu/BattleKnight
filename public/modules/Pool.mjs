@@ -1,3 +1,5 @@
+import Loader from "./Loader.mjs";
+
 export default class Pool {
     constructor(scene, x, y, height, width) {
         this.graphics = new Phaser.GameObjects.Graphics(scene);
@@ -47,60 +49,62 @@ export default class Pool {
     }
 
     putPiece(t, pay) {
+        if (this.pieces.length === 6) {
+            t.onDragend(t);
+            return;
+        }
+
+        if (pay) {
+            if (!t.costEnough(t)) {
+                t.onDragend(t);
+                return;
+            } else {
+                t.costThatValue(t);
+            }
+        }
+
         let flag = true;
         //level up once
         for (let i = 0; i < this.pieces.length; i++) {
             if ((this.pieces[i].key === t.key) && (this.pieces[i].level === t.level)) {
-                if(!pay){
-                    t.destroy();
-                    this.pieces[i].level++;
-                    t.textCreate(this.pieces[i], 0.015, 0.045);
-                    flag = false;
-                } else if (t.costEnough(t)){
-                    t.costThatValue(t);
-                    t.destroy();
-                    this.pieces[i].level++;
-                    t.textCreate(this.pieces[i], 0.015, 0.045);
-                    flag = false;
-                }
+                t.destroy();
+                this.pieces[i].level++;
+                t.textCreate(this.pieces[i], 0.015, 0.045);
+                flag = false;
             }
         }
         if (flag) {
-            if (this.pieces.length < 6) {
-                let yDown = -8;
-                switch (this.pieces.length) {
-                    case 0: {
-                        t.changePosition(t, this.x + 1 / 6 * this.width, this.y + 1 / 4 * this.height - yDown);
-                        break;
-                    }
-                    case 1: {
-                        t.changePosition(t, this.x + 1 / 2 * this.width, this.y + 1 / 4 * this.height - yDown);
-                        break;
-                    }
-                    case 2: {
-                        t.changePosition(t, this.x + 5 / 6 * this.width, this.y + 1 / 4 * this.height - yDown);
-                        break;
-                    }
-                    case 3: {
-                        t.changePosition(t, this.x + 1 / 6 * this.width, this.y + 3 / 4 * this.height - yDown);
-                        break;
-                    }
-                    case 4: {
-                        t.changePosition(t, this.x + 1 / 2 * this.width, this.y + 3 / 4 * this.height - yDown);
-                        break;
-                    }
-                    case 5: {
-                        t.changePosition(t, this.x + 5 / 6 * this.width, this.y + 3 / 4 * this.height - yDown);
-                        break;
-                    }
+            let yDown = -8;
+            switch (this.pieces.length) {
+                case 0: {
+                    t.changePosition(t, this.x + 1 / 6 * this.width, this.y + 1 / 4 * this.height - yDown);
+                    break;
                 }
-                t.image.setScale(0.275);
-                t.textCreate(t, 0.015, 0.045);
-                this.pieces.push(t);
-                t.putInPool = true;
-            } else {
-                t.onDragend(t);
+                case 1: {
+                    t.changePosition(t, this.x + 1 / 2 * this.width, this.y + 1 / 4 * this.height - yDown);
+                    break;
+                }
+                case 2: {
+                    t.changePosition(t, this.x + 5 / 6 * this.width, this.y + 1 / 4 * this.height - yDown);
+                    break;
+                }
+                case 3: {
+                    t.changePosition(t, this.x + 1 / 6 * this.width, this.y + 3 / 4 * this.height - yDown);
+                    break;
+                }
+                case 4: {
+                    t.changePosition(t, this.x + 1 / 2 * this.width, this.y + 3 / 4 * this.height - yDown);
+                    break;
+                }
+                case 5: {
+                    t.changePosition(t, this.x + 5 / 6 * this.width, this.y + 3 / 4 * this.height - yDown);
+                    break;
+                }
             }
+            t.image.setScale(0.275);
+            t.textCreate(t, 0.015, 0.045);
+            this.pieces.push(t);
+            t.putInPool = true;
         } else {
             this.checkPieces();
         }

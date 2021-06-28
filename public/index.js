@@ -27,6 +27,7 @@ window.config = {
     }
 };
 window.vue = new VueUI();
+window.vue.hide('game');
 window.io = new SocketIO();
 window.gameStart = function (gameInfo) {
     window.gameInfo = gameInfo;
