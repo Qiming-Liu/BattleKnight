@@ -3,10 +3,12 @@ const app = express();
 const server = require('http').Server(app);
 const socketIO = require('socket.io');
 const io = socketIO(server, {pingTimeout: 10000});
+const loader = require('./content');
 const port = 5000;
 
 app.set('port', port);
 app.use(express.static(__dirname + '/public'));
+loader.create();
 
 let room = {};
 io.on('connection', socket => {
