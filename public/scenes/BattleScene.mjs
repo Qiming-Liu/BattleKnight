@@ -15,6 +15,16 @@ export default class BattleScene extends Phaser.Scene {
     }
 
     preload() {
+        //Noop
+        this.game.registry.events._events.blur = [];
+        this.game.registry.events._events.focus = [];
+        this.game.registry.events._events.hidden = [];
+        this.game.onBlur = () => noop("blur");
+        this.game.onFocus = () => noop("focus");
+        this.game.onPause = () => noop("pause");
+        this.focusLoss = () => noop("focusloss");
+        this.focusGain = () => noop("focusgain");
+
         this.load.setBaseURL('./assets/');
 
         //scenes
@@ -40,6 +50,9 @@ export default class BattleScene extends Phaser.Scene {
         this.load.plugin('rexfadeplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexfadeplugin.min.js', true);
         this.load.plugin('rexdragplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexdragplugin.min.js', true);
 
+        //music
+        this.load.audio('bgm', 'bgm.mp3');
+
         //objects
         Loader.preload(this);
     }
@@ -63,9 +76,22 @@ export default class BattleScene extends Phaser.Scene {
         this.left.UnitsFactory = new UnitsFactory(this, 'left');
         this.right.UnitsFactory = new UnitsFactory(this, 'right');
 
+        //Music
+        this.music = this.sound.add('bgm', {
+            mute: false,
+            volume: 0.2,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        });
+
         //Finish loading
         this.started = false;
         window.io.finishLoading();
+
+        this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', {fontSize: '32px', fill: '#fff'});
     }
 
     update(time, delta) {
@@ -77,6 +103,9 @@ export default class BattleScene extends Phaser.Scene {
             this.panel.bar.tick(delta);
             for (let i = 0; i < this.panel.pool.pieces.length; i++) {
                 this.panel.pool.pieces[i].tick(delta);
+            }
+            if (!this.music.isPlaying) {
+                this.music.play();
             }
         }
     }
