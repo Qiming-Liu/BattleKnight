@@ -48,4 +48,8 @@ export default class VueUI {
     show(id) {
         document.getElementById(id).style.display = 'block';
     }
+
+    toast(text, config){
+        window.vue.vueObject.$bvToast.toast(text, config);
+    }
 }

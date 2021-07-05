@@ -40,35 +40,46 @@ export default class Panel {
         }, scene);
 
         this.pieces = [];
-        this.onRefresh(t);
-        this.pool.drawPiecesSpace(t.pieces);
+        for (let i = 0; i < 6; i++) {
+            let key = this.randomPiece();
+            let x = scene.game.config.width * (0.12 + 0.075 * i);
+            let y = scene.game.config.height * 0.85;
+            this.pieces.push(new Piece(scene, x, y, 0.4, key, 1, i));
+        }
+        this.pool.drawPiecesSpace(this.pieces);
 
         this.bin = new Bin(scene, scene.game.config.width * 0.8, scene.game.config.height * 0.875, 128, 256);
     }
 
     onRefresh(t) {
-        for (let i = 0; i < t.pieces.length; i++) {
-            if (!t.pieces[i].putInPool) {
-                t.pieces[i].destroy();
+        console.log(t);
+        if(t.bar.getValue() >= 2){
+            t.bar.costValue(2);
+
+            for (let i = 0; i < t.pieces.length; i++) {
+                if (!t.pieces[i].putInPool) {
+                    t.pieces[i].destroy();
+                }
             }
-        }
-        t.pieces = [];
-        for (let i = 0; i < 6; i++) {
-            let key = t.randomPiece();
-            let x = t.scene.game.config.width * (0.12 + 0.075 * i);
-            let y = t.scene.game.config.height * 0.85;
-            t.pieces.push(new Piece(t.scene, x, y, 0.4, key, 1, i));
+            t.pieces = [];
+            for (let i = 0; i < 6; i++) {
+                let key = t.randomPiece();
+                let x = t.scene.game.config.width * (0.12 + 0.075 * i);
+                let y = t.scene.game.config.height * 0.85;
+                t.pieces.push(new Piece(t.scene, x, y, 0.4, key, 1, i));
+            }
         }
     }
 
     onUpgrade(t) {
         if (t.dice.number < 6) {
             if (t.bar.getValue() >= 10) {
+                t.bar.costValue(10);
+
                 try {
                     t.dice.image.destroy();
                 } catch (e) {
                 }
-                t.bar.costValue(10);
                 t.dice.number++;
                 t.dice.image = t.scene.add.image(t.scene.game.config.width * 0.05, t.scene.game.config.height * 0.875, 'Dice_' + t.dice.number).setScale(0.75);
             }
@@ -76,7 +87,11 @@ export default class Panel {
     }
 
     onSkill(t) {
+        if(t.bar.getValue() === 11){
+            t.bar.costValue(11);
 
+            t.scene[window.gameInfo.direction].Base.current.description.baseSkill();
+        }
     }
 
     onSetting(t) {

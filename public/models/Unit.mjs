@@ -7,7 +7,7 @@ export default class Unit extends Target {
     constructor(scene, x, y, key, level, direction) {
         super(scene, x, y, key, level, direction);
         //缩放翻转
-        let scale = 0.5;
+        let scale = 0.45 + 0.05 * level;
         if (this.direction === 'left') {
             this.setScale(scale, scale);
         } else {

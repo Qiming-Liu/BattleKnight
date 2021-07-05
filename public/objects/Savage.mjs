@@ -9,7 +9,8 @@ export default function (level) {
             //类型 unit=刷兵单位 hero=特种单位 building=建筑
             type: 'unit',
             //图像
-            image: 'objects/units/Savage.png'
+            image: 'objects/units/Savage.png',
+
         },
         //战斗
         battle: {

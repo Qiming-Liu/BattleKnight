@@ -78,7 +78,15 @@ export default class Piece {
     }
 
     costEnough(t) {
-        return t.scene.panel.bar.getValue() > Loader.getDefault(t.key, 0).cost;
+        let result = t.scene.panel.bar.getValue() >= Loader.getDefault(t.key, 0).cost;
+        if (!result) {
+            window.vue.toast(`Wait for earning more money.`, {
+                title: 'Not enough money (' + t.scene.panel.bar.getValue() + ' < ' + Loader.getDefault(t.key, 0).cost + ')',
+                variant: 'danger',
+                autoHideDelay: 3000
+            });
+        }
+        return result;
     }
 
     costThatValue(t) {
@@ -88,7 +96,7 @@ export default class Piece {
     tick(delta) {
         if (this.putInPool) {
             this.interval += delta;
-            if (delta > Loader.getDefault(this.key, 0).interval) {
+            if (this.interval > Loader.getDefault(this.key, 0).interval) {
                 this.interval = 0;
                 //emit
                 window.io.socket.emit('produce', {

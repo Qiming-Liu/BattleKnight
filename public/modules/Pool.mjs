@@ -1,5 +1,3 @@
-import Loader from "./Loader.mjs";
-
 export default class Pool {
     constructor(scene, x, y, height, width) {
         this.graphics = new Phaser.GameObjects.Graphics(scene);
@@ -50,6 +48,11 @@ export default class Pool {
 
     putPiece(t, pay) {
         if (this.pieces.length === 6) {
+            window.vue.toast(`You can drag the piece to delete.`, {
+                title: 'Pool is full',
+                variant: 'danger',
+                autoHideDelay: 3000
+            });
             t.onDragend(t);
             return;
         }

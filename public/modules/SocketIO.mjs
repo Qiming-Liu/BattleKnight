@@ -1,11 +1,10 @@
 export default class SocketIO {
     constructor() {
         this.socket = io.connect(window.location.href, {reconnection: false});
-
         this.socket.on("room", msg => {
             switch (msg) {
                 case 'exist':{
-                    window.vue.vueObject.$bvToast.toast(`The room number is already exist.`, {
+                    window.vue.toast(`The room number is already exist.`, {
                         title: 'Error',
                         variant: 'danger',
                         autoHideDelay: 3000
@@ -13,7 +12,7 @@ export default class SocketIO {
                     break;
                 }
                 case 'unexist':{
-                    window.vue.vueObject.$bvToast.toast(`The room number is not exist.`, {
+                    window.vue.toast(`The room number is not exist.`, {
                         title: 'Error',
                         variant: 'danger',
                         autoHideDelay: 3000
@@ -21,7 +20,7 @@ export default class SocketIO {
                     break;
                 }
                 case 'created':{
-                    window.vue.vueObject.$bvToast.toast(`The room is ready.`, {
+                    window.vue.toast(`The room is ready.`, {
                         title: 'Ready',
                         variant: 'success',
                         autoHideDelay: 3000
@@ -37,7 +36,7 @@ export default class SocketIO {
         });
 
         this.socket.on('gameOver', () => {
-            window.vue.vueObject.$bvToast.toast(`Your opponent left the game.`, {
+            window.vue.toast(`Your opponent left the game.`, {
                 title: 'Game Over',
                 variant: 'success',
                 autoHideDelay: 3000
@@ -47,11 +46,12 @@ export default class SocketIO {
         this.socket.on('allFinishLoading', () => {
             window.vue.hide('vue');
             window.vue.show('game');
-            window.game.scene.scenes[0].started = true;
+            window.scene = window.game.scene.scenes[0];
+            window.scene.started = true;
         });
 
         this.socket.on('produce', piece => {
-            window.game.scene.scenes[0][piece.direction].UnitsFactory.produce(window.game.scene.scenes[0], piece.key, piece.level);
+            window.scene[piece.direction].UnitsFactory.produce(window.scene, piece.key, piece.level);
         });
     }
 

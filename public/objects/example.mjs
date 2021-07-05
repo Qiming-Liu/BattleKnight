@@ -9,7 +9,13 @@ export default function (level) {
             //类型 unit=刷兵单位 hero=特种单位 building=建筑
             type: 'unit',
             //图像
-            image: 'objects/units/Savage.png'
+            image: 'objects/units/Savage.png',
+            //是否击毁时结束游戏
+            base: false,
+            //如果是基地, 那么技能效果是
+            baseSkill: function () {
+
+            }
         },
         //战斗
         battle: {
@@ -40,7 +46,7 @@ export default function (level) {
                 shield: 0
             }
         },
-        //技能列表 列表[0]与能量值相关, 其他技能不能与能量值相关
+        //技能列表
         skills: [],
         //移动
         move: {

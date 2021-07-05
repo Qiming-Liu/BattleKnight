@@ -12,6 +12,7 @@ export default class BattleScene extends Phaser.Scene {
         super('BattleScene');
         this.left = {}
         this.right = {}
+        this.started = false;
     }
 
     preload() {
@@ -19,6 +20,8 @@ export default class BattleScene extends Phaser.Scene {
         this.game.registry.events._events.blur = [];
         this.game.registry.events._events.focus = [];
         this.game.registry.events._events.hidden = [];
+
+        function noop(nothing) {}
         this.game.onBlur = () => noop("blur");
         this.game.onFocus = () => noop("focus");
         this.game.onPause = () => noop("pause");
@@ -88,10 +91,7 @@ export default class BattleScene extends Phaser.Scene {
         });
 
         //Finish loading
-        this.started = false;
         window.io.finishLoading();
-
-        this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', {fontSize: '32px', fill: '#fff'});
     }
 
     update(time, delta) {

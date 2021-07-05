@@ -9,7 +9,9 @@ export default function (level) {
             //类型 unit=刷兵单位 hero=特种单位 building=建筑
             type: 'building',
             //图像
-            image: 'objects/building/Base01.png'
+            image: 'objects/building/Base01.png',
+            //是否击毁时结束游戏
+            base: true
         },
         //战斗
         battle: {

@@ -44,11 +44,24 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
     tick(enemy, delta) {
         this.bar.draw(this.x, this.y);
         this.attackTime += delta;
+
+        //tick skill
+        for (let i = 0; i < this.current.skills.length; i++) {
+            this.current.skills[i].tick(this, delta);
+        }
     }
 
     attack() {
         let attackTarget = this.attackTarget;
         if (this.attackTime >= this.current.battle.attack.interval) {//可以攻击
+            //触发攻击的技能
+            for (let i = 0; i < this.current.skills.length; i++) {
+                this.current.skills[i].attack(this);
+            }
+            //触发受到攻击的技能
+            for (let i = 0; i < this.attackTarget.current.skills.length; i++) {
+                this.attackTarget.current.skills[i].beAttacked(this);
+            }
             //伤害计算
             let damage;
             if (attackTarget.current.battle.armor.shield > 0) {//圣盾
@@ -75,6 +88,20 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
                     //淡出
                     attackTarget.fade.fadeOutDestroy(attackTarget, 1500);
                     attackTarget.bar.destroy();
+
+                    //游戏结束
+                    if(attackTarget.current.description.base){//是基地
+                        window.scene.started = false;
+                        window.scene.add.text(game.config.width / 2 - 64 * 5.5, game.config.height / 2 - 64, 'GAME OVER', {
+                            fontSize: '128px',
+                            fill: '#fff'
+                        });
+                        window.vue.toast(`Game Over. Thank you for playing. You can refresh for playing again.`, {
+                            title: 'Game Over',
+                            variant: 'success',
+                            autoHideDelay: 10000
+                        });
+                    }
                 } else {//非建筑死亡
                     //取消死亡单位碰撞
                     attackTarget.collider.destroy();
