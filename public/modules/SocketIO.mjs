@@ -1,9 +1,11 @@
+import Target from "../models/Target.mjs";
+
 export default class SocketIO {
     constructor() {
         this.socket = io.connect(window.location.href, {reconnection: false});
         this.socket.on("room", msg => {
             switch (msg) {
-                case 'exist':{
+                case 'exist': {
                     window.vue.toast(`The room number is already exist.`, {
                         title: 'Error',
                         variant: 'danger',
@@ -11,7 +13,7 @@ export default class SocketIO {
                     });
                     break;
                 }
-                case 'unexist':{
+                case 'unexist': {
                     window.vue.toast(`The room number is not exist.`, {
                         title: 'Error',
                         variant: 'danger',
@@ -19,7 +21,7 @@ export default class SocketIO {
                     });
                     break;
                 }
-                case 'created':{
+                case 'created': {
                     window.vue.toast(`The room is ready.`, {
                         title: 'Ready',
                         variant: 'success',
@@ -53,9 +55,35 @@ export default class SocketIO {
         this.socket.on('produce', piece => {
             window.scene[piece.direction].UnitsFactory.produce(window.scene, piece.key, piece.level);
         });
+
+        //for skills
+        this.socket.on('setHealth', list => {
+            for (let i = 0; i < list.length; i++) {
+                Target.getTargetByID(list[i].id).current.battle.health = list[i].health;
+            }
+        });
+        this.socket.on('letDie', list => {
+            for (let i = 0; i < list.length; i++) {
+                Target.getTargetByID(list[i].id).letDie();
+            }
+        });
     }
 
     finishLoading() {
         this.socket.emit('finishLoading', window.gameInfo.roomNumber);
+    }
+
+    setHealth(list) {
+        this.socket.emit('setHealth', {
+            roomNumber: window.gameInfo.roomNumber,
+            list: list
+        });
+    }
+
+    letDie(list) {
+        this.socket.emit('letDie', {
+            roomNumber: window.gameInfo.roomNumber,
+            list: list
+        });
     }
 }

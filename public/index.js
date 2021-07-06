@@ -30,5 +30,6 @@ window.vue.hide('game');
 window.io = new SocketIO();
 window.gameStart = function (gameInfo) {
     window.gameInfo = gameInfo;
+    window.targetID = 0;
     window.game = new Phaser.Game(window.config);
 }

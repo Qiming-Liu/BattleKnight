@@ -6,15 +6,59 @@ export default function (level) {
             name: '民兵',
             //介绍文字
             intro: '最基础的单位',
-            //类型 unit=刷兵单位 hero=特种单位 building=建筑
+            //类型 unit=单位 building=建筑
             type: 'unit',
             //图像
             image: 'objects/units/Savage.png',
             //是否击毁时结束游戏
             base: false,
-            //如果是基地, 那么技能效果是
+            //基地技能
             baseSkill: function () {
+                function 消灭场上所有单位() {
+                    //代价 10%基地当前血量
+                    let list1 = [];
+                    list1.push({
+                        id: window.scene[window.gameInfo.direction].base.id,
+                        health: window.scene[window.gameInfo.direction].base.current.battle.health * 0.9
+                    });
+                    window.io.setHealth(list1);
+                    //执行清场
+                    let list2 = [];
+                    for (let i = 0; i < window.scene.left.UnitsFactory.UnitsList.length; i++) {
+                        list2.push({
+                            id: window.scene.left.UnitsFactory.UnitsList[i].id
+                        });
+                    }
+                    for (let i = 0; i < window.scene.right.UnitsFactory.UnitsList.length; i++) {
+                        list2.push({
+                            id: window.scene.right.UnitsFactory.UnitsList[i].id
+                        });
+                    }
+                    window.io.letDie(list2);
+                }
+                消灭场上所有单位();
 
+                function 将对方所有单位血量变为一半() {
+                    //代价 无
+                    //执行血量一半
+                    let list = [];
+                    if(window.gameInfo.direction === 'left'){
+                        for (let i = 0; i < window.scene.right.UnitsFactory.UnitsList.length; i++) {
+                            list.push({
+                                id: window.scene.right.UnitsFactory.UnitsList[i].id,
+                                health: window.scene.right.UnitsFactory.UnitsList[i].current.battle.health * 0.5
+                            });
+                        }
+                    }
+                    for (let i = 0; i < window.scene.left.UnitsFactory.UnitsList.length; i++) {
+                        list.push({
+                            id: window.scene.left.UnitsFactory.UnitsList[i].id,
+                            health: window.scene.left.UnitsFactory.UnitsList[i].current.battle.health * 0.5
+                        });
+                    }
+                    window.io.setHealth(list);
+                }
+                将对方所有单位血量变为一半();
             }
         },
         //战斗

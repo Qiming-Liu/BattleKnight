@@ -39,6 +39,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
         }
         this.attackTarget = null;
         this.attackTime = this.current.battle.attack.interval;
+        this.id = window.targetID++;
     }
 
     tick(enemy, delta) {
@@ -83,34 +84,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
             //扣血
             attackTarget.current.battle.health -= damage;
             if (attackTarget.current.battle.health <= 0) {//目标死亡
-                attackTarget.current.battle.health = 0;
-                if (attackTarget.current.description.type === 'building') {//建筑死亡
-                    //淡出
-                    attackTarget.fade.fadeOutDestroy(attackTarget, 1500);
-                    attackTarget.bar.destroy();
-
-                    //游戏结束
-                    if(attackTarget.current.description.base){//是基地
-                        window.scene.started = false;
-                        window.scene.add.text(game.config.width / 2 - 64 * 5.5, game.config.height / 2 - 64, 'GAME OVER', {
-                            fontSize: '128px',
-                            fill: '#fff'
-                        });
-                        window.vue.toast(`Game Over. Thank you for playing. You can refresh for playing again.`, {
-                            title: 'Game Over',
-                            variant: 'success',
-                            autoHideDelay: 10000
-                        });
-                    }
-                } else {//非建筑死亡
-                    //取消死亡单位碰撞
-                    attackTarget.collider.destroy();
-                    //取消死亡单位移动
-                    attackTarget.setVelocityX(0);
-                    setTimeout(function () {
-                        attackTarget.destroy();
-                    }, 1500);
-                }
+                this.letDie(attackTarget);
             }
 
             attackTarget.bar.setHealth(attackTarget.current.battle.health);
@@ -157,8 +131,52 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    letDie(target) {
+        target.current.battle.health = 0;
+        if (target.current.description.type === 'building') {//建筑死亡
+            //淡出
+            target.fade.fadeOutDestroy(target, 1500);
+            target.bar.destroy();
+
+            //游戏结束
+            if (target.current.description.base) {//是基地
+                window.scene.started = false;
+                window.scene.add.text(game.config.width / 2 - 64 * 5.5, game.config.height / 2 - 64, 'GAME OVER', {
+                    fontSize: '128px',
+                    fill: '#fff'
+                });
+                window.vue.toast(`Game Over. Thank you for playing. You can refresh for playing again.`, {
+                    title: 'Game Over',
+                    variant: 'success',
+                    autoHideDelay: 10000
+                });
+            }
+        } else {//非建筑死亡
+            //取消死亡单位碰撞
+            target.collider.destroy();
+            //取消死亡单位移动
+            target.setVelocityX(0);
+            setTimeout(function () {
+                target.destroy();
+            }, 1500);
+        }
+    }
+
     destroy() {
         super.destroy();
         this.bar.destroy();
+    }
+
+    static getTargetByID(id) {
+        for (let i = 0; i < window.scene.left.UnitsFactory.UnitsList.length; i++) {
+            if (window.scene.left.UnitsFactory.UnitsList[i].id === id) {
+                return window.scene.left.UnitsFactory.UnitsList[i]
+            }
+        }
+        for (let i = 0; i < window.scene.right.UnitsFactory.UnitsList.length; i++) {
+            if (window.scene.right.UnitsFactory.UnitsList[i].id === id) {
+                return window.scene.right.UnitsFactory.UnitsList[i]
+            }
+        }
     }
 }

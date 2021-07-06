@@ -83,6 +83,15 @@ io.on('connection', socket => {
             direction: piece.gameInfo.direction
         });
     });
+
+    //for skills
+    socket.on('setHealth', data => {
+        io.to(data.roomNumber).emit('setHealth', data.list);
+    });
+
+    socket.on('letDie', data => {
+        io.to(data.roomNumber).emit('letDie', data.list);
+    });
 });
 
 server.listen(port);

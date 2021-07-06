@@ -95,7 +95,7 @@ export default class Panel {
     }
 
     onSetting(t) {
-        // window.v.onSettingInBattle();
+        window.vue.settingObject.Toggle();
     }
 
     randomPiece() {

@@ -63,4 +63,8 @@ export default class Unit extends Target {
             }
         }
     }
+
+    letDie(){
+
+    }
 }
