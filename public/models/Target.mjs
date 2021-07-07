@@ -84,7 +84,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
             //扣血
             attackTarget.current.battle.health -= damage;
             if (attackTarget.current.battle.health <= 0) {//目标死亡
-                this.letDie(attackTarget);
+                attackTarget.letDie();
             }
 
             attackTarget.bar.setHealth(attackTarget.current.battle.health);
@@ -131,15 +131,15 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    letDie(target) {
-        target.current.battle.health = 0;
-        if (target.current.description.type === 'building') {//建筑死亡
+    letDie() {
+        this.current.battle.health = 0;
+        if (this.current.description.type === 'building') {//建筑死亡
             //淡出
-            target.fade.fadeOutDestroy(target, 1500);
-            target.bar.destroy();
+            this.fade.fadeOutDestroy(this, 1500);
+            this.bar.destroy();
 
             //游戏结束
-            if (target.current.description.base) {//是基地
+            if (this.current.description.base) {//是基地
                 window.scene.started = false;
                 window.scene.add.text(game.config.width / 2 - 64 * 5.5, game.config.height / 2 - 64, 'GAME OVER', {
                     fontSize: '128px',
@@ -153,11 +153,11 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
             }
         } else {//非建筑死亡
             //取消死亡单位碰撞
-            target.collider.destroy();
+            this.collider.destroy();
             //取消死亡单位移动
-            target.setVelocityX(0);
+            this.setVelocityX(0);
             setTimeout(function () {
-                target.destroy();
+                this.destroy();
             }, 1500);
         }
     }
