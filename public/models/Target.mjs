@@ -85,6 +85,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
             //扣血
             attackTarget.current.battle.health -= damage;
             if (attackTarget.current.battle.health <= 0) {//目标死亡
+                attackTarget.current.battle.health = 0;
                 window.io.letDie([attackTarget.id]);
             }
 
@@ -111,6 +112,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
                 if (enemy[i].current.description.type === 'building') {//如果目标是建筑, 不计算高度
                     distance = Phaser.Math.Distance.Between(this.body.x, 0, enemy[i].body.x, 0);
                 } else {
+                    //x undefinded
                     distance = Phaser.Math.Distance.Between(this.body.x, this.body.y, enemy[i].body.x, enemy[i].body.y);
                 }
                 if (distance <= this.current.battle.attack.range) {//在攻击范围内
@@ -133,7 +135,6 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
     }
 
     letDie() {
-        this.current.battle.health = 0;
         this.bar.destroy();
         if (this.current.description.type === 'building') {//建筑死亡
             //淡出

@@ -3,13 +3,13 @@ export default function (level) {
         //描述
         description: {
             //名字
-            name: '野人',
+            name: '法师',
             //介绍文字
-            intro: '高移速',
+            intro: '高攻速远程',
             //类型 unit=单位 building=建筑
             type: 'unit',
             //图像
-            image: 'objects/units/Savage.png',
+            image: 'objects/units/Mage.png',
             //是否击毁时结束游戏
             base: false,
             //基地技能
@@ -25,11 +25,11 @@ export default function (level) {
             //攻击
             attack: {
                 //攻击力
-                atk: 2 + level,
+                atk: 1 + level,
                 //攻击间隔 毫秒
                 interval: 500,
                 //攻击范围
-                range: 100,
+                range: 250 + 50 * level,
                 //溅射范围
                 splash: 0,
                 //投掷物图像 shake=抖动
@@ -50,7 +50,7 @@ export default function (level) {
         //移动
         move: {
             //最大移动速度
-            speed: 200,
+            speed: 100,
             //距离地面的高度
             height: 0
         },

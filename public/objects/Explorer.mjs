@@ -3,13 +3,13 @@ export default function (level) {
         //描述
         description: {
             //名字
-            name: '野人',
+            name: '探险家',
             //介绍文字
-            intro: '高移速',
+            intro: '高成长',
             //类型 unit=单位 building=建筑
             type: 'unit',
             //图像
-            image: 'objects/units/Savage.png',
+            image: 'objects/units/Explorer.png',
             //是否击毁时结束游戏
             base: false,
             //基地技能
@@ -19,17 +19,17 @@ export default function (level) {
         //战斗
         battle: {
             //最大生命值
-            health: 10,
+            health: 1 + 10 * level,
             //最大能量值
             power: 0,
             //攻击
             attack: {
                 //攻击力
-                atk: 2 + level,
+                atk: 1 + 5 * level,
                 //攻击间隔 毫秒
-                interval: 500,
+                interval: 1000,
                 //攻击范围
-                range: 100,
+                range: 200,
                 //溅射范围
                 splash: 0,
                 //投掷物图像 shake=抖动
@@ -40,9 +40,9 @@ export default function (level) {
             //护甲 最少也要受到1点伤害
             armor: {
                 //每次受到伤害会减少的数值
-                reduce: 0,
+                reduce: 2 * level,
                 //圣盾数量
-                shield: 0
+                shield: level
             }
         },
         //技能列表
@@ -50,7 +50,7 @@ export default function (level) {
         //移动
         move: {
             //最大移动速度
-            speed: 200,
+            speed: 100,
             //距离地面的高度
             height: 0
         },

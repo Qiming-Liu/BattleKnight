@@ -3,13 +3,13 @@ export default function (level) {
         //描述
         description: {
             //名字
-            name: '野人',
+            name: '民兵',
             //介绍文字
-            intro: '高移速',
+            intro: '最基础的单位',
             //类型 unit=单位 building=建筑
             type: 'unit',
             //图像
-            image: 'objects/units/Savage.png',
+            image: 'objects/units/Militia.png',
             //是否击毁时结束游戏
             base: false,
             //基地技能
@@ -19,7 +19,7 @@ export default function (level) {
         //战斗
         battle: {
             //最大生命值
-            health: 10,
+            health: 5,
             //最大能量值
             power: 0,
             //攻击
@@ -27,7 +27,7 @@ export default function (level) {
                 //攻击力
                 atk: 2 + level,
                 //攻击间隔 毫秒
-                interval: 500,
+                interval: 1000,
                 //攻击范围
                 range: 100,
                 //溅射范围
@@ -50,13 +50,13 @@ export default function (level) {
         //移动
         move: {
             //最大移动速度
-            speed: 200,
+            speed: 100,
             //距离地面的高度
             height: 0
         },
         //花费
-        cost: 2,
+        cost: 1,
         //刷兵间隔 毫秒
-        interval: 5000
+        interval: 4000
     }
 }

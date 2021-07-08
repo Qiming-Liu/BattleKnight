@@ -41,7 +41,7 @@ export default class Panel {
 
         this.pieces = [];
         for (let i = 0; i < 6; i++) {
-            let key = this.randomPiece();
+            let key = window.randomPieces(this.dice.number);
             let x = scene.game.config.width * (0.12 + 0.075 * i);
             let y = scene.game.config.height * 0.85;
             this.pieces.push(new Piece(scene, x, y, 0.4, key, 1, i));
@@ -63,7 +63,7 @@ export default class Panel {
             }
             t.pieces = [];
             for (let i = 0; i < 6; i++) {
-                let key = t.randomPiece();
+                let key = window.randomPieces(t.dice.number);
                 let x = t.scene.game.config.width * (0.12 + 0.075 * i);
                 let y = t.scene.game.config.height * 0.85;
                 t.pieces.push(new Piece(t.scene, x, y, 0.4, key, 1, i));
@@ -96,9 +96,5 @@ export default class Panel {
 
     onSetting(t) {
         window.vue.settingObject.Toggle();
-    }
-
-    randomPiece() {
-        return "Savage";
     }
 }
