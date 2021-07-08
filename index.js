@@ -92,6 +92,11 @@ io.on('connection', socket => {
     socket.on('letDie', data => {
         io.to(data.roomNumber).emit('letDie', data.list);
     });
+
+    //try tick
+    socket.on('tick', data => {
+        io.to(room[data.roomNumber].right).emit('tick', data.tick);
+    });
 });
 
 server.listen(port);

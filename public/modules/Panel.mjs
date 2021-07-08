@@ -90,7 +90,7 @@ export default class Panel {
         if(t.bar.getValue() === 11){
             t.bar.costValue(11);
 
-            t.scene[window.gameInfo.direction].Base.current.description.baseSkill();
+            t.scene[window.gameInfo.direction].Base.default.description.baseSkill();
         }
     }
 

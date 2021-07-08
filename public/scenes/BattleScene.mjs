@@ -21,7 +21,9 @@ export default class BattleScene extends Phaser.Scene {
         this.game.registry.events._events.focus = [];
         this.game.registry.events._events.hidden = [];
 
-        function noop(nothing) {}
+        function noop(nothing) {
+        }
+
         this.game.onBlur = () => noop("blur");
         this.game.onFocus = () => noop("focus");
         this.game.onPause = () => noop("pause");
@@ -58,6 +60,8 @@ export default class BattleScene extends Phaser.Scene {
 
         //objects
         Loader.preload(this);
+
+        this.physics.world.setFPS(60);
     }
 
     create() {
@@ -106,6 +110,9 @@ export default class BattleScene extends Phaser.Scene {
             }
             if (!this.music.isPlaying) {
                 this.music.play();
+            }
+            if (window.gameInfo.direction === 'left') {
+                window.io.tick(this.left, this.right);
             }
         }
     }

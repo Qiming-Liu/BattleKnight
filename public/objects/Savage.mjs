@@ -49,7 +49,6 @@ export default function (level) {
             speed: 100,
             //距离地面的高度
             height: 0
-            //
         },
         //花费
         cost: 4,

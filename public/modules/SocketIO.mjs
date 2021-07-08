@@ -64,7 +64,19 @@ export default class SocketIO {
         });
         this.socket.on('letDie', list => {
             for (let i = 0; i < list.length; i++) {
-                Target.getTargetByID(list[i].id).letDie();
+                Target.getTargetByID(list[i]).letDie();
+            }
+        });
+
+        //tick
+        this.socket.on('tick', tick => {
+            if (window.gameInfo.direction === 'right') {
+                for (let i = 0; i < tick.length; i++) {
+                    let target = Target.getTargetByID(tick[i].id);
+                    if (target !== null) {
+                        target.setData(tick[i]);
+                    }
+                }
             }
         });
     }
@@ -84,6 +96,22 @@ export default class SocketIO {
         this.socket.emit('letDie', {
             roomNumber: window.gameInfo.roomNumber,
             list: list
+        });
+    }
+
+    tick(left, right) {
+        let data = [];
+        data.push(left.Base.getData());
+        data.push(right.Base.getData());
+        for (let i = 0; i < left.UnitsFactory.UnitsList.length; i++) {
+            data.push(left.UnitsFactory.UnitsList[i].getData());
+        }
+        for (let i = 0; i < right.UnitsFactory.UnitsList.length; i++) {
+            data.push(right.UnitsFactory.UnitsList[i].getData());
+        }
+        this.socket.emit('tick', {
+            roomNumber: window.gameInfo.roomNumber,
+            tick: data
         });
     }
 }

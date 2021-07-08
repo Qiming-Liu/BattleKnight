@@ -1,5 +1,4 @@
-import Loader
-    from "../modules/Loader.mjs";
+import Loader from "../modules/Loader.mjs";
 
 export default class Target extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, key, level, direction) {
@@ -25,8 +24,6 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true);
         //与地面的碰撞
         scene.physics.add.collider(this, scene.ground);
-        //用来取消单位之间的碰撞
-        this.collider = null;
         //预处理攻击方式
         switch (this.current.battle.attack.projectile) {
             case "shake": {
@@ -40,6 +37,10 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
         this.attackTarget = null;
         this.attackTime = this.current.battle.attack.interval;
         this.id = window.targetID++;
+        this.skills = [];
+        for (let i = 0; i < this.default.skills.length; i++) {
+            this.skills.push(this.default.skills[i])
+        }
     }
 
     tick(enemy, delta) {
@@ -47,8 +48,8 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
         this.attackTime += delta;
 
         //tick skill
-        for (let i = 0; i < this.current.skills.length; i++) {
-            this.current.skills[i].tick(this, delta);
+        for (let i = 0; i < this.skills.length; i++) {
+            this.skills[i].tick(this, delta);
         }
     }
 
@@ -56,12 +57,12 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
         let attackTarget = this.attackTarget;
         if (this.attackTime >= this.current.battle.attack.interval) {//可以攻击
             //触发攻击的技能
-            for (let i = 0; i < this.current.skills.length; i++) {
-                this.current.skills[i].attack(this);
+            for (let i = 0; i < this.skills.length; i++) {
+                this.skills[i].attack(this);
             }
             //触发受到攻击的技能
-            for (let i = 0; i < this.attackTarget.current.skills.length; i++) {
-                this.attackTarget.current.skills[i].beAttacked(this);
+            for (let i = 0; i < this.attackTarget.skills.length; i++) {
+                this.attackTarget.skills[i].beAttacked(this);
             }
             //伤害计算
             let damage;
@@ -84,7 +85,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
             //扣血
             attackTarget.current.battle.health -= damage;
             if (attackTarget.current.battle.health <= 0) {//目标死亡
-                attackTarget.letDie();
+                window.io.letDie([attackTarget.id]);
             }
 
             attackTarget.bar.setHealth(attackTarget.current.battle.health);
@@ -133,10 +134,10 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
 
     letDie() {
         this.current.battle.health = 0;
+        this.bar.destroy();
         if (this.current.description.type === 'building') {//建筑死亡
             //淡出
             this.fade.fadeOutDestroy(this, 1500);
-            this.bar.destroy();
 
             //游戏结束
             if (this.current.description.base) {//是基地
@@ -145,20 +146,32 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
                     fontSize: '128px',
                     fill: '#fff'
                 });
-                window.vue.toast(`Game Over. Thank you for playing. You can refresh for playing again.`, {
-                    title: 'Game Over',
-                    variant: 'success',
-                    autoHideDelay: 10000
-                });
             }
         } else {//非建筑死亡
-            //取消死亡单位碰撞
-            this.collider.destroy();
+            let t = this;
+            setTimeout(function () {
+                t.destroy();
+            }, 1500);
             //取消死亡单位移动
             this.setVelocityX(0);
-            setTimeout(function () {
-                this.destroy();
-            }, 1500);
+        }
+    }
+
+    getData() {
+        return {
+            id: this.id,
+            x: this.x,
+            y: this.y,
+            attackTime: this.attackTime,
+            current: JSON.parse(JSON.stringify(this.current))
+        };
+    }
+
+    setData(target) {
+        if (this.current.battle.health > 0) {
+            this.setPosition(target.x, target.y);
+            this.attackTime = target.attackTime;
+            this.current = target.current;
         }
     }
 
@@ -168,6 +181,11 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
     }
 
     static getTargetByID(id) {
+        if (window.scene.left.Base.id === id) {
+            return window.scene.left.Base;
+        } else if (window.scene.right.Base.id === id) {
+            return window.scene.right.Base;
+        }
         for (let i = 0; i < window.scene.left.UnitsFactory.UnitsList.length; i++) {
             if (window.scene.left.UnitsFactory.UnitsList[i].id === id) {
                 return window.scene.left.UnitsFactory.UnitsList[i]
@@ -178,5 +196,6 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
                 return window.scene.right.UnitsFactory.UnitsList[i]
             }
         }
+        return null;
     }
 }

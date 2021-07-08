@@ -25,14 +25,10 @@ export default function (level) {
                     //执行清场
                     let list2 = [];
                     for (let i = 0; i < window.scene.left.UnitsFactory.UnitsList.length; i++) {
-                        list2.push({
-                            id: window.scene.left.UnitsFactory.UnitsList[i].id
-                        });
+                        list2.push(window.scene.left.UnitsFactory.UnitsList[i].getData());
                     }
                     for (let i = 0; i < window.scene.right.UnitsFactory.UnitsList.length; i++) {
-                        list2.push({
-                            id: window.scene.right.UnitsFactory.UnitsList[i].id
-                        });
+                        list2.push(window.scene.right.UnitsFactory.UnitsList[i].getData());
                     }
                     window.io.letDie(list2);
                 }
@@ -98,7 +94,6 @@ export default function (level) {
             speed: 100,
             //距离地面的高度
             height: 0
-            //
         },
         //花费
         cost: 4,
