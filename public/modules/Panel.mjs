@@ -52,7 +52,6 @@ export default class Panel {
     }
 
     onRefresh(t) {
-        console.log(t);
         if(t.bar.getValue() >= 2){
             t.bar.costValue(2);
 

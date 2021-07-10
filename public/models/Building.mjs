@@ -25,11 +25,14 @@ export default class Building extends Target {
     }
 
     tick(enemy, delta) {
+        if (this.scene === undefined) {
+            return;
+        }
         super.tick(enemy, delta);
 
         if (this.current.battle.health > 0) {//自己没死
             if (this.attackTarget !== null) {//有攻击目标
-                if (this.attackTarget.current.battle.health > 0) {//目标活着
+                if (this.attackTarget.current.battle.health > 0 && this.attackTarget.scene !== undefined) {//目标活着
                     let distance;
                     if (this.attackTarget.current.description.type === 'building') {//如果目标是建筑, 不计算高度
                         distance = Phaser.Math.Distance.Between(this.body.x, 0, this.attackTarget.body.x, 0);

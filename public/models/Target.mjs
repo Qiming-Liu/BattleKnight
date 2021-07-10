@@ -107,12 +107,11 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
     getAttackTarget(enemy) {
         let attackAbleList = [];
         for (let i = 0; i < enemy.length; i++) {
-            if (enemy[i].current.battle.health > 0) {//目标活着
+            if (enemy[i].current.battle.health > 0 && enemy[i].scene !== undefined) {//目标活着
                 let distance;
                 if (enemy[i].current.description.type === 'building') {//如果目标是建筑, 不计算高度
                     distance = Phaser.Math.Distance.Between(this.body.x, 0, enemy[i].body.x, 0);
                 } else {
-                    //x undefinded
                     distance = Phaser.Math.Distance.Between(this.body.x, this.body.y, enemy[i].body.x, enemy[i].body.y);
                 }
                 if (distance <= this.current.battle.attack.range) {//在攻击范围内
@@ -169,7 +168,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
     }
 
     setData(target) {
-        if (this.current.battle.health > 0) {
+        if (this.current.battle.health > 0 && this.scene !== undefined) {
             this.setPosition(target.x, target.y);
             this.attackTime = target.attackTime;
             this.current = target.current;
@@ -178,7 +177,7 @@ export default class Target extends Phaser.Physics.Arcade.Sprite {
 
     destroy() {
         super.destroy();
-        this.bar.destroy();
+        window.scene[this.direction].UnitsFactory.UnitsList = window.scene[this.direction].UnitsFactory.UnitsList.filter(target => target.scene !== undefined);
     }
 
     static getTargetByID(id) {
