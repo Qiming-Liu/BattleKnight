@@ -1,2 +1,5 @@
 # BattleKnight
-Phaser3 + Cordova 2D Game
+Phaser3 Game
+
+## Video
+> https://youtu.be/mlAiYdweCgs
